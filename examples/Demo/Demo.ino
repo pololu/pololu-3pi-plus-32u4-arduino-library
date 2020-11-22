@@ -21,6 +21,8 @@ enable IMU functionality.
 */
 #include <Pololu3piPlus32U4IMU.h>
 
+#include <PololuMenu.h>
+
 using namespace Pololu3piPlus32U4;
 
 LCD lcd;
@@ -34,97 +36,14 @@ IMU imu;
 Motors motors;
 Encoders encoders;
 
-char buttonMonitor();
+PololuMenu mainMenu;
 
 bool launchSelfTest = false;
-
-class Menu
-{
-public:
-  struct Item
-  {
-    const char * name;
-    void (* action)();
-  };
-
-  Menu(Item * items, uint8_t itemCount)
-  {
-    this->items = items;
-    this->itemCount = itemCount;
-    lcdItemIndex = 0;
-  }
-
-  void lcdUpdate(uint8_t index)
-  {
-    lcd.clear();
-    lcd.print(items[index].name);
-    lcd.gotoXY(0, 1);
-    lcd.print(F("\x7f" "A \xa5" "B C\x7e"));
-  }
-
-  void action(uint8_t index)
-  {
-    items[index].action();
-  }
-
-  // Prompts the user to choose one of the menu items,
-  // then runs it, then returns.
-  void select()
-  {
-    lcdUpdate(lcdItemIndex);
-
-    while (1)
-    {
-      switch (buttonMonitor())
-      {
-      case 'A':
-        // The A button was pressed so decrement the index.
-        if (lcdItemIndex == 0)
-        {
-          lcdItemIndex = itemCount - 1;
-        }
-        else
-        {
-          lcdItemIndex--;
-        }
-        lcdUpdate(lcdItemIndex);
-        break;
-
-      case 'C':
-        // The C button was pressed so increase the index.
-        if (lcdItemIndex >= itemCount - 1)
-        {
-          lcdItemIndex = 0;
-        }
-        else
-        {
-          lcdItemIndex++;
-        }
-        lcdUpdate(lcdItemIndex);
-        break;
-
-      case 'B':
-        // The B button was pressed so run the item and return.
-        action(lcdItemIndex);
-        return;
-      }
-    }
-  }
-
-private:
-  Item * items;
-  uint8_t itemCount;
-  uint8_t lcdItemIndex;
-};
-
 
 // A couple of simple tunes, stored in program space.
 const char beepBrownout[] PROGMEM = "<c8";
 const char beepWelcome[] PROGMEM = ">g32>>c32";
 const char beepThankYou[] PROGMEM = ">>c32>g32";
-const char beepButtonA[] PROGMEM = "!c32";
-const char beepButtonB[] PROGMEM = "!e32";
-const char beepButtonC[] PROGMEM = "!g32";
 const char beepFail[] PROGMEM = "<g-8r8<g-8r8<g-8";
 const char beepPass[] PROGMEM = ">l32c>e>g>>c8";
 const char beepReadySetGo[] PROGMEM = ">c16r2>c16r2>>c4";
@@ -242,7 +161,7 @@ void ledDemo()
 
   uint8_t state = 3;
   static uint16_t lastUpdateTime = millis() - 2000;
-  while (buttonMonitor() != 'B')
+  while (mainMenu.buttonMonitor() != 'B')
   {
     if ((uint16_t)(millis() - lastUpdateTime) >= 500)
     {
@@ -299,7 +218,7 @@ void selfTestWaitShowingVBat()
   ledYellow(0);
   ledGreen(0);
   ledRed(0);
-  while(!buttonMonitor())
+  while(!mainMenu.buttonMonitor())
   {
     lcd.gotoXY(0,0);
     lcd.print(' ');
@@ -314,7 +233,7 @@ void selfTestFail()
   lcd.gotoXY(0, 1);
   lcd.print(F("FAIL"));
   buzzer.playFromProgramSpace(beepFail);
-  while(!buttonMonitor());
+  while(!mainMenu.buttonMonitor());
 }
 
 void selfTest()
@@ -337,7 +256,7 @@ void selfTest()
   }
   while(!bumpSensors.leftIsPressed() || !bumpSensors.rightIsPressed());
 
-  buzzer.playFromProgramSpace(beepButtonA);
+  buzzer.play("!c32");
   lcd.gotoXY(0, 1);
   lcd.print(F("        "));
 
@@ -436,7 +355,7 @@ void selfTest()
   lcd.print(F("A=?  B=Y"));
   while(true)
   {
-    char button = buttonMonitor();
+    char button = mainMenu.buttonMonitor();
     if(button == 'A')
     {
       lcd.clear();
@@ -477,7 +396,7 @@ void lineSensorDemo()
 
   uint16_t lineSensorValues[5];
 
-  while (buttonMonitor() != 'B')
+  while (mainMenu.buttonMonitor() != 'B')
   {
     bool emittersOff = buttonC.isPressed();
 
@@ -509,7 +428,7 @@ void bumpSensorDemo()
   bumpSensors.calibrate();
   displayBackArrow();
 
-  while (buttonMonitor() != 'B')
+  while (mainMenu.buttonMonitor() != 'B')
   {
     bumpSensors.read();
 
@@ -605,7 +524,7 @@ void inertialDemo()
   lcd.gotoXY(4, 1);
   lcd.print(F("Up"));
 
-  while (buttonMonitor() != 'B')
+  while (mainMenu.buttonMonitor() != 'B')
   {
     imu.read();
 
@@ -700,7 +619,7 @@ void compassDemo()
       lcd.print(dir);
     }
 
-    switch (buttonMonitor())
+    switch (mainMenu.buttonMonitor())
     {
     case 'B':
       return;
@@ -737,7 +656,7 @@ void motorDemoHelper(bool showEncoders)
   int16_t encCountsLeft = 0, encCountsRight = 0;
   char buf[4];
 
-  while (buttonMonitor() != 'B')
+  while (mainMenu.buttonMonitor() != 'B')
   {
     encCountsLeft += encoders.getCountsAndResetLeft();
     if (encCountsLeft < 0) { encCountsLeft += 1000; }
@@ -880,7 +799,7 @@ void spinDemo()
   buzzer.playFromProgramSpace(beepReadySetGo);
   while(buzzer.isPlaying())
   {
-    if(buttonMonitor() == 'B')
+    if(mainMenu.buttonMonitor() == 'B')
       return;
   }
   spinDemoInternal();
@@ -894,14 +813,14 @@ void spinDemoInternal()
   {
     motors.setSpeeds(i * 10, -i * 10);
     delay(50);
-    if(buttonMonitor() == 'B')
+    if(mainMenu.buttonMonitor() == 'B')
       return;
   }
   for(int i = 40; i >= 0; i--)
   {
     motors.setSpeeds(i * 10, -i * 10);
     delay(50);
-    if(buttonMonitor() == 'B')
+    if(mainMenu.buttonMonitor() == 'B')
       return;
   }
 
@@ -910,14 +829,14 @@ void spinDemoInternal()
   {
     motors.setSpeeds(-i * 10, i * 10);
     delay(50);
-    if(buttonMonitor() == 'B')
+    if(mainMenu.buttonMonitor() == 'B')
       return;
   }
   for(int i = 40; i >= 0; i--)
   {
     motors.setSpeeds(-i * 10, i * 10);
     delay(50);
-    if(buttonMonitor() == 'B')
+    if(mainMenu.buttonMonitor() == 'B')
       return;
   }
 }
@@ -944,7 +863,7 @@ void musicDemo()
   size_t fugueTitlePos = 0;
   uint16_t lastShiftTime = millis() - 2000;
 
-  while (buttonMonitor() != 'B')
+  while (mainMenu.buttonMonitor() != 'B')
   {
     // Shift the song title to the left every 250 ms.
     if ((uint16_t)(millis() - lastShiftTime) > 250)
@@ -981,7 +900,7 @@ void powerDemo()
   uint16_t lastDisplayTime = millis() - 2000;
   char buf[6];
 
-  while (buttonMonitor() != 'B')
+  while (mainMenu.buttonMonitor() != 'B')
   {
     if ((uint16_t)(millis() - lastDisplayTime) > 250)
     {
@@ -1030,7 +949,7 @@ void lcdDemo() {
     sprintf(buf, "x%02x", startCharacter);
     lcd.print(buf);
 
-    char b = buttonMonitor();
+    char b = mainMenu.buttonMonitor();
     if ('B' == b) break;
     if ('A' == b) startCharacter -= 8;
     if ('C' == b) startCharacter += 8;
@@ -1045,7 +964,7 @@ void aboutDemo() {
   uint16_t lastShiftTime = millis() - 2000;
   displayBackArrow();
 
-  while (buttonMonitor() != 'B')
+  while (mainMenu.buttonMonitor() != 'B')
   {
     // Shift the text to the left every 250 ms.
     if ((uint16_t)(millis() - lastShiftTime) > 250)
@@ -1068,52 +987,27 @@ void aboutDemo() {
   }
 }
 
-Menu::Item mainMenuItems[] = {
-  { "Power", powerDemo },
-  { "LineSens", lineSensorDemo },
-  { "BumpSens", bumpSensorDemo },
-  { "Inertial", inertialDemo },
-  { "Compass", compassDemo },
-  { "Motors", motorDemo },
-  { "Encoders", encoderDemo },
-  { "Spin", spinDemo },
-  { "LEDs", ledDemo },
-  { "LCD", lcdDemo },
-  { "Music", musicDemo },
-  { "About", aboutDemo },
-};
-Menu mainMenu(mainMenuItems, sizeof(mainMenuItems)/sizeof(mainMenuItems[0]));
-
-// This function watches for button presses.  If a button is
-// pressed, it beeps a corresponding beep and it returns 'A',
-// 'B', or 'C' depending on what button was pressed.  If no
-// button was pressed, it returns 0.  This function is meant to
-// be called repeatedly in a loop.
-char buttonMonitor()
-{
-  if (buttonA.getSingleDebouncedPress())
-  {
-    buzzer.playFromProgramSpace(beepButtonA);
-    return 'A';
-  }
-
-  if (buttonB.getSingleDebouncedPress())
-  {
-    buzzer.playFromProgramSpace(beepButtonB);
-    return 'B';
-  }
-
-  if (buttonC.getSingleDebouncedPress())
-  {
-    buzzer.playFromProgramSpace(beepButtonC);
-    return 'C';
-  }
-
-  return 0;
-}
-
 void setup()
 {
+  static const PololuMenu::Item mainMenuItems[] = {
+    { F("Power"), powerDemo },
+    { F("LineSens"), lineSensorDemo },
+    { F("BumpSens"), bumpSensorDemo },
+    { F("Inertial"), inertialDemo },
+    { F("Compass"), compassDemo },
+    { F("Motors"), motorDemo },
+    { F("Encoders"), encoderDemo },
+    { F("Spin"), spinDemo },
+    { F("LEDs"), ledDemo },
+    { F("LCD"), lcdDemo },
+    { F("Music"), musicDemo },
+    { F("About"), aboutDemo },
+  };
+  mainMenu.setItems(mainMenuItems, sizeof(mainMenuItems)/sizeof(mainMenuItems[0]));
+  mainMenu.setLcd(lcd);
+  mainMenu.setBuzzer(buzzer);
+  mainMenu.setButtons(buttonA, buttonB, buttonC);
+
   initInertialSensors();
 
   loadCustomCharacters();
@@ -1193,7 +1087,7 @@ void setup()
   // Keep blinking the yellow LED while waiting for the
   // user to press button B.
   blinkStart = millis();
-  while (buttonMonitor() != 'B')
+  while (mainMenu.buttonMonitor() != 'B')
   {
     uint16_t blinkPhase = millis() - blinkStart;
     ledGreen(blinkPhase < 1000);
