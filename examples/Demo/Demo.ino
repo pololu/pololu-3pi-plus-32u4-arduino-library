@@ -1007,6 +1007,7 @@ void setup()
   mainMenu.setLcd(lcd);
   mainMenu.setBuzzer(buzzer);
   mainMenu.setButtons(buttonA, buttonB, buttonC);
+  mainMenu.setSecondLine(F("\x7f" "A \xa5" "B C\x7e"));
 
   initInertialSensors();
 
