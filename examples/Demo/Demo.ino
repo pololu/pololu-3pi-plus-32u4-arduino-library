@@ -1102,11 +1102,11 @@ void setup()
   lcd.gotoXY(0, 1);
   lcd.print(F("  you!"));
   delay(1000);
+  mainMenuWelcome();
 }
 
-// This function prompts the user to choose something from the
-// main menu, runs their selection, and then returns.
-void mainMenuSelect()
+// Clear LEDs and show a message about the main menu.
+void mainMenuWelcome()
 {
   ledYellow(false);
   ledGreen(false);
@@ -1116,10 +1116,13 @@ void mainMenuSelect()
   lcd.gotoXY(0, 1);
   lcd.print(F("  Menu"));
   delay(1000);
-  mainMenu.select();
 }
 
 void loop()
 {
-  mainMenuSelect();
+  if(mainMenu.select())
+  {
+    // a menu item ran; show "Main Menu" again and repeat
+    mainMenuWelcome();
+  }
 }
