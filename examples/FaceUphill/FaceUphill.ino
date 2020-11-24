@@ -46,14 +46,14 @@ Encoders encoders;
 
 int16_t maxSpeed;
 
-void selectStandard()
-{
-  maxSpeed = 100;
-}
-
 void selectHyper()
 {
   maxSpeed = 50;
+}
+
+void selectStandard()
+{
+  maxSpeed = 100;
 }
 
 void selectTurtle()
@@ -72,8 +72,8 @@ void selectEdition()
   delay(1000);
 
   static const PololuMenu::Item items[] = {
-    { F("Standard"), selectStandard },
     { F("Hyper"), selectHyper },
+    { F("Standard"), selectStandard },
     { F("Turtle"), selectTurtle },
   };
 
