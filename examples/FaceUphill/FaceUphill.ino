@@ -21,6 +21,7 @@ to 0. */
 
 #include <Wire.h>
 #include <Pololu3piPlus32U4.h>
+#include <PololuMenu.h>
 
 /* The IMU is not fully enabled by default since it depends on the
 Wire library, which uses about 1400 bytes of additional code space
@@ -34,13 +35,59 @@ enable IMU functionality.
 
 using namespace Pololu3piPlus32U4;
 
-const int16_t maxSpeed = 100;
-
 IMU imu;
 Motors motors;
 LCD lcd;
+Buzzer buzzer;
 ButtonA buttonA;
+ButtonB buttonB;
+ButtonC buttonC;
 Encoders encoders;
+
+int16_t maxSpeed;
+
+void selectStandard()
+{
+  maxSpeed = 100;
+}
+
+void selectHyper()
+{
+  maxSpeed = 50;
+}
+
+void selectTurtle()
+{
+  maxSpeed = 200;
+}
+
+PololuMenu menu;
+
+void selectEdition()
+{
+  lcd.clear();
+  lcd.print(F("Select"));
+  lcd.gotoXY(0,1);
+  lcd.print(F("edition"));
+  delay(1000);
+
+  static const PololuMenu::Item items[] = {
+    { F("Standard"), selectStandard },
+    { F("Hyper"), selectHyper },
+    { F("Turtle"), selectTurtle },
+  };
+
+  menu.setItems(items, 3);
+  menu.setLcd(lcd);
+  menu.setBuzzer(buzzer);
+  menu.setButtons(buttonA, buttonB, buttonC);
+
+  while(!menu.select());
+
+  lcd.gotoXY(0,1);
+  lcd.print("OK!  ...");
+  delay(1000);
+}
 
 void setup()
 {
@@ -50,10 +97,7 @@ void setup()
   imu.enableDefault();
   imu.configureForFaceUphill();
 
-  lcd.clear();
-  lcd.print(F("Press A"));
-  buttonA.waitForPress();
-  lcd.clear();
+  selectEdition();
 }
 
 void loop()
