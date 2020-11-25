@@ -44,6 +44,14 @@ ButtonB buttonB;
 ButtonC buttonC;
 Encoders encoders;
 
+/* Configuration for specific 3pi+ editions: the Standard, Turtle, and
+Hyper versions of 3pi+ have different motor configurations, requiring
+the demo to be configured with different parameters for proper
+operation.  The following functions set up these parameters using a
+menu that runs at the beginning of the program.  To bypass the menu,
+you can replace the call to selectEdition() in setup() with one of the
+specific functions.
+*/
 int16_t maxSpeed;
 
 void selectHyper()
@@ -99,6 +107,8 @@ void setup()
   imu.enableDefault();
   imu.configureForFaceUphill();
 
+  // To bypass the menu, replace this function with
+  // selectHyper(), selectStandard(), or selectTurtle().
   selectEdition();
 }
 
