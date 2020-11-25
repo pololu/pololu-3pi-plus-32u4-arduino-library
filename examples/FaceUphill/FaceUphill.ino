@@ -48,6 +48,8 @@ int16_t maxSpeed;
 
 void selectHyper()
 {
+  motors.flipLeftMotor(true);
+  motors.flipRightMotor(true);
   maxSpeed = 50;
 }
 
