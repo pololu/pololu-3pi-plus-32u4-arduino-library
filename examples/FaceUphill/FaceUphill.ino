@@ -96,7 +96,6 @@ void selectEdition()
 
   lcd.gotoXY(0,1);
   lcd.print("OK!  ...");
-  delay(1000);
 }
 
 void setup()
@@ -110,6 +109,9 @@ void setup()
   // To bypass the menu, replace this function with
   // selectHyper(), selectStandard(), or selectTurtle().
   selectEdition();
+
+  // Delay before running motors
+  delay(1000);
 }
 
 void loop()
