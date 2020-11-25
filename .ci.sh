@@ -16,6 +16,9 @@ mapfile -t DEPS < <((grep 'depends=' library.properties || echo "") | cut -c9- |
 if [ ${#DEPS[@]} -ne 0 ]; then
   arduino-cli lib install "${DEPS[@]}"
 fi
+# 'Manually' install PololuMenu until it is available in the library manager
+git clone https://github.com/pololu/pololu-menu-arduino.git "$LIB/PololuMenu"
+
 
 for e in examples/*; do
   for b in ${BOARDS[*]}; do
