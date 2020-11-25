@@ -1,12 +1,15 @@
 // Copyright Pololu Corporation.  For more information, see http://www.pololu.com/
 
-/*! \file Tpp32U4LCD.h */
+/*! \file LCD.h */
 
 #pragma once
 
 #include <PololuHD44780.h>
 #include <FastGPIO.h>
 #include <USBPause.h>
+
+namespace Pololu3piPlus32U4
+{
 
 /*! \brief Writes data to the LCD on the 3pi+ 32U4.
  *
@@ -30,7 +33,7 @@
  * characters can be displayed, see the
  * [HD44780 datasheet](http://www.pololu.com/file/0J72/HD44780.pdf).
  */
-class Tpp32U4LCD : public PololuHD44780Base
+class LCD : public PololuHD44780Base
 {
     // Pin assignments
     static const uint8_t rs = 0, e = 1, db4 = 14, db5 = 17, db6 = 13, db7 = IO_D5;
@@ -80,3 +83,4 @@ private:
     }
 };
 
+}

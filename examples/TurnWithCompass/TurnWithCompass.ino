@@ -1,34 +1,34 @@
-/* This example uses the Tpp32U4 Shield's onboard magnetometer to help
- * the Tpp32U4 make precise 90-degree turns and drive in squares. It uses
- * Tpp32U4Motors, Pushbutton, and Tpp32U4IMU.
+/* This example uses the  Shield's onboard magnetometer to help
+ * the  make precise 90-degree turns and drive in squares. It uses
+ * Motors, Pushbutton, and IMU.
  *
  * This program first calibrates the compass to account for offsets in
  *  its output. Calibration is accomplished in setup().
  *
  * In loop(), The driving angle then changes its offset by 90 degrees
  * from the heading every second. Essentially, this navigates the
- * Tpp32U4 to drive in square patterns.
+ * 3pi+ to drive in square patterns.
  *
  * It is important to note that stray magnetic fields from electric
- * current (including from the Tpp32U4's own motors) and the environment
+ * current (including from the robot's own motors) and the environment
  * (for example, steel rebar in a concrete floor) might adversely
  * affect readings from the compass and make them less reliable.
  */
 
 #include <Wire.h>
-#include <Tpp32U4.h>
+#include <Pololu3piPlus32U4.h>
 
 /* The IMU is not fully enabled by default since it depends on the
 Wire library, which uses about 1400 bytes of additional code space
 and defines an interrupt service routine (ISR) that might be
 incompatible with some applications (such as our TWISlave example).
 
-Include Tpp32U4IMU.h in one of your cpp/ino files to enable IMU
+Include IMU.h in one of your cpp/ino files to enable IMU
 functionality.
 */
-#include <Tpp32U4IMU.h>
+#include <Pololu3piPlus32U4IMU.h>
 
-#define SPEED           100 // Maximum motor speed when going straight; variable speed when turning
+#define SPEED_STRAIGHT 100 // Maximum motor speed when going straight; variable speed when turning
 #define TURN_BASE_SPEED 50 // Base speed when turning (added to variable speed)
 
 
@@ -37,19 +37,21 @@ functionality.
 // Allowed deviation (in degrees) relative to target angle that must be achieved before driving straight
 #define DEVIATION_THRESHOLD 5
 
-Tpp32U4Motors motors;
-Tpp32U4ButtonA buttonA;
-Tpp32U4IMU imu;
+using namespace Pololu3piPlus32U4;
 
-Tpp32U4IMU::vector<int16_t> m_max; // maximum magnetometer values, used for calibration
-Tpp32U4IMU::vector<int16_t> m_min; // minimum magnetometer values, used for calibration
+Motors motors;
+ButtonA buttonA;
+IMU imu;
+
+IMU::vector<int16_t> m_max; // maximum magnetometer values, used for calibration
+IMU::vector<int16_t> m_min; // minimum magnetometer values, used for calibration
 
 // Setup will calibrate our compass by finding maximum/minimum magnetic readings
 void setup()
 {
   // The highest possible magnetic value to read in any direction is 32767
   // The lowest possible magnetic value to read in any direction is -32767
-  Tpp32U4IMU::vector<int16_t> running_min = {32767, 32767, 32767}, running_max = {-32767, -32767, -32767};
+  IMU::vector<int16_t> running_min = {32767, 32767, 32767}, running_max = {-32767, -32767, -32767};
   unsigned char index;
 
   Serial.begin(9600);
@@ -69,11 +71,11 @@ void setup()
 
   Serial.println("starting calibration");
 
-  // To calibrate the magnetometer, the Tpp32U4 spins to find the max/min
+  // To calibrate the magnetometer, the 3pi+ spins to find the max/min
   // magnetic vectors. This information is used to correct for offsets
   // in the magnetometer data.
-  motors.setLeftSpeed(SPEED);
-  motors.setRightSpeed(-SPEED);
+  motors.setLeftSpeed(SPEED_STRAIGHT);
+  motors.setRightSpeed(-SPEED_STRAIGHT);
 
   for(index = 0; index < CALIBRATION_SAMPLES; index ++)
   {
@@ -135,10 +137,10 @@ void loop()
   Serial.print("    Difference: ");
   Serial.print(relative_heading);
 
-  // If the Tpp32U4 has turned to the direction it wants to be pointing, go straight and then do another turn
+  // If the 3pi+ has turned to the direction it wants to be pointing, go straight and then do another turn
   if(abs(relative_heading) < DEVIATION_THRESHOLD)
   {
-    motors.setSpeeds(SPEED, SPEED);
+    motors.setSpeeds(SPEED_STRAIGHT, SPEED_STRAIGHT);
 
     Serial.print("   Straight");
 
@@ -152,18 +154,18 @@ void loop()
     // This will help account for variable magnetic field, as opposed
     // to using fixed increments of 90 degrees from the initial
     // heading (which might have been measured in a different magnetic
-    // field than the one the Tpp32U4 is experiencing now).
+    // field than the one the 3pi+ is experiencing now).
     // Note: fmod() is floating point modulo
     target_heading = fmod(averageHeading() + 90, 360);
   }
   else
   {
-    // To avoid overshooting, the closer the Tpp32U4 gets to the target
+    // To avoid overshooting, the closer the 3pi+ gets to the target
     // heading, the slower it should turn. Set the motor speeds to a
     // minimum base amount plus an additional variable amount based
     // on the heading difference.
 
-    speed = SPEED*relative_heading/180;
+    speed = SPEED_STRAIGHT*relative_heading/180;
 
     if (speed < 0)
       speed -= TURN_BASE_SPEED;
@@ -178,8 +180,8 @@ void loop()
 }
 
 // Converts x and y components of a vector to a heading in degrees.
-// This calculation assumes that the Tpp32U4 is always level.
-template <typename T> float heading(Tpp32U4IMU::vector<T> v)
+// This calculation assumes that the 3pi+ is always level.
+template <typename T> float heading(IMU::vector<T> v)
 {
   float x_scaled =  2.0*(float)(v.x - m_min.x) / (m_max.x - m_min.x) - 1.0;
   float y_scaled =  2.0*(float)(v.y - m_min.y) / (m_max.y - m_min.y) - 1.0;
@@ -208,7 +210,7 @@ float relativeHeading(float heading_from, float heading_to)
 // the motors' magnetic interference.
 float averageHeading()
 {
-  Tpp32U4IMU::vector<int32_t> avg = {0, 0, 0};
+  IMU::vector<int32_t> avg = {0, 0, 0};
 
   for(int i = 0; i < 10; i ++)
   {

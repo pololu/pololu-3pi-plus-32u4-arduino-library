@@ -1,5 +1,5 @@
 /* This example reads the raw values from the accelerometer,
-magnetometer, and gyro on the Tpp 32U4, and prints those raw
+magnetometer, and gyro on the 3pi+ 32U4, and prints those raw
 values to the serial monitor.
 
 The accelerometer readings can be converted to units of g using
@@ -18,19 +18,21 @@ The magnetometer readings are more difficult to interpret and
 will usually require calibration. */
 
 #include <Wire.h>
-#include <Tpp32U4.h>
+#include <Pololu3piPlus32U4.h>
 
 /* The IMU is not fully enabled by default since it depends on the
 Wire library, which uses about 1400 bytes of additional code space
 and defines an interrupt service routine (ISR) that might be
 incompatible with some applications (such as our TWISlave example).
 
-Include Tpp32U4IMU.h in one of your cpp/ino files to enable IMU
-functionality.
+Include Pololu3piPlus32U4IMU.h in one of your cpp/ino files to
+enable IMU functionality.
 */
-#include <Tpp32U4IMU.h>
+#include <Pololu3piPlus32U4IMU.h>
 
-Tpp32U4IMU imu;
+using namespace Pololu3piPlus32U4;
+
+IMU imu;
 
 char report[120];
 

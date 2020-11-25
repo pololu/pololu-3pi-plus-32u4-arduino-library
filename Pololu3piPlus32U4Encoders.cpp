@@ -1,6 +1,6 @@
 // Copyright Pololu Corporation.  For more information, see http://www.pololu.com/
 
-#include <Tpp32U4Encoders.h>
+#include <Pololu3piPlus32U4Encoders.h>
 #include <FastGPIO.h>
 #include <avr/interrupt.h>
 #include <Arduino.h>
@@ -9,6 +9,9 @@
 #define LEFT_B     IO_E2
 #define RIGHT_XOR  7
 #define RIGHT_B    23
+
+namespace Pololu3piPlus32U4
+{
 
 static volatile bool lastLeftA;
 static volatile bool lastLeftB;
@@ -55,7 +58,7 @@ static void rightISR()
     lastRightB = newRightB;
 }
 
-void Tpp32U4Encoders::init2()
+void Encoders::init2()
 {
     // Set the pins as pulled-up inputs.
     FastGPIO::Pin<LEFT_XOR>::setInputPulledUp();
@@ -88,7 +91,7 @@ void Tpp32U4Encoders::init2()
     errorRight = 0;
 }
 
-int16_t Tpp32U4Encoders::getCountsLeft()
+int16_t Encoders::getCountsLeft()
 {
     init();
 
@@ -98,7 +101,7 @@ int16_t Tpp32U4Encoders::getCountsLeft()
     return counts;
 }
 
-int16_t Tpp32U4Encoders::getCountsRight()
+int16_t Encoders::getCountsRight()
 {
     init();
 
@@ -108,7 +111,7 @@ int16_t Tpp32U4Encoders::getCountsRight()
     return counts;
 }
 
-int16_t Tpp32U4Encoders::getCountsAndResetLeft()
+int16_t Encoders::getCountsAndResetLeft()
 {
     init();
 
@@ -119,7 +122,7 @@ int16_t Tpp32U4Encoders::getCountsAndResetLeft()
     return counts;
 }
 
-int16_t Tpp32U4Encoders::getCountsAndResetRight()
+int16_t Encoders::getCountsAndResetRight()
 {
     init();
 
@@ -130,7 +133,7 @@ int16_t Tpp32U4Encoders::getCountsAndResetRight()
     return counts;
 }
 
-bool Tpp32U4Encoders::checkErrorLeft()
+bool Encoders::checkErrorLeft()
 {
     init();
 
@@ -139,11 +142,13 @@ bool Tpp32U4Encoders::checkErrorLeft()
     return error;
 }
 
-bool Tpp32U4Encoders::checkErrorRight()
+bool Encoders::checkErrorRight()
 {
     init();
 
     bool error = errorRight;
     errorRight = 0;
     return error;
+}
+
 }

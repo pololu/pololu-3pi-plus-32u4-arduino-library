@@ -1,8 +1,8 @@
 // Copyright Pololu Corporation.  For more information, see http://www.pololu.com/
 
-/*! \file Tpp32U4.h
+/*! \file Pololu3piPlus32U4.h
  *
- * \brief Main header file for the Tpp32U4 library.
+ * \brief Main header file for the Pololu 3pi+ 32U4 library.
  *
  * This file includes all the other headers files provided by the library.
  */
@@ -14,14 +14,17 @@
 #endif
 
 #include <FastGPIO.h>
-#include <Tpp32U4BumpSensors.h>
-#include <Tpp32U4Buttons.h>
-#include <Tpp32U4Buzzer.h>
-#include <Tpp32U4Encoders.h>
-#include <Tpp32U4IMU_declaration.h>
-#include <Tpp32U4LCD.h>
-#include <Tpp32U4LineSensors.h>
-#include <Tpp32U4Motors.h>
+#include <Pololu3piPlus32U4BumpSensors.h>
+#include <Pololu3piPlus32U4Buttons.h>
+#include <Pololu3piPlus32U4Buzzer.h>
+#include <Pololu3piPlus32U4Encoders.h>
+#include <Pololu3piPlus32U4IMU_declaration.h>
+#include <Pololu3piPlus32U4LCD.h>
+#include <Pololu3piPlus32U4LineSensors.h>
+#include <Pololu3piPlus32U4Motors.h>
+
+namespace Pololu3piPlus32U4
+{
 
 // TODO: servo support
 
@@ -86,4 +89,6 @@ inline uint16_t readBatteryMillivolts()
     // nearest whole number instead of always rounding down.
     const uint32_t correction = 64 * sampleCount - 1;
     return ((uint32_t)sum * 1875 + correction) / (128 * sampleCount);
+}
+
 }

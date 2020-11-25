@@ -1,9 +1,11 @@
-#include <Tpp32U4.h>
+#include <Pololu3piPlus32U4.h>
 
-Tpp32U4BumpSensors bumpSensors;
-Tpp32U4Buzzer buzzer;
-Tpp32U4LCD lcd;
-Tpp32U4Motors motors;
+using namespace Pololu3piPlus32U4;
+
+BumpSensors bumpSensors;
+Buzzer buzzer;
+LCD lcd;
+Motors motors;
 
 void setup()
 {

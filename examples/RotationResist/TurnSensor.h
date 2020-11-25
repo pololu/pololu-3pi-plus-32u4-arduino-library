@@ -1,10 +1,10 @@
 /* Turnsensor.h and TurnSensor.cpp provide functions for
-configuring the Tpp 32U4's gyro, calibrating it, and using it to
+configuring the 3pi+ 32U4's gyro, calibrating it, and using it to
 measure how much the robot has turned about its Z axis. */
 
 #pragma once
 
-#include <Tpp32U4.h>
+#include <Pololu3piPlus32U4.h>
 
 // This constant represents a turn of 45 degrees.
 const int32_t turnAngle45 = 0x20000000;
@@ -23,6 +23,6 @@ extern uint32_t turnAngle;
 extern int16_t turnRate;
 
 // These objects must be defined in your sketch.
-extern Tpp32U4ButtonA buttonA;
-extern Tpp32U4LCD lcd;
-extern Tpp32U4IMU imu;
+extern Pololu3piPlus32U4::ButtonA buttonA;
+extern Pololu3piPlus32U4::LCD lcd;
+extern Pololu3piPlus32U4::IMU imu;

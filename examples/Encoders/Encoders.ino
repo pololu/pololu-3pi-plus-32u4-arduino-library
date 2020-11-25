@@ -20,14 +20,16 @@
 // third and fourth numbers represent errors from the left and
 // right encoders, respectively.
 
-#include <Tpp32U4.h>
+#include <Pololu3piPlus32U4.h>
 
-Tpp32U4Encoders encoders;
-Tpp32U4LCD lcd;
-Tpp32U4Buzzer buzzer;
-Tpp32U4Motors motors;
-Tpp32U4ButtonA buttonA;
-Tpp32U4ButtonC buttonC;
+using namespace Pololu3piPlus32U4;
+
+Encoders encoders;
+LCD lcd;
+Buzzer buzzer;
+Motors motors;
+ButtonA buttonA;
+ButtonC buttonC;
 
 const char encoderErrorLeft[] PROGMEM = "!<c2";
 const char encoderErrorRight[] PROGMEM = "!<e2";

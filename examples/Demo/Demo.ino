@@ -9,28 +9,30 @@ to the 3pi+.  If you cannot see any text on the LCD,
 try rotating the contrast potentiometer. */
 
 #include <Wire.h>
-#include <Tpp32U4.h>
+#include <Pololu3piPlus32U4.h>
 
 /* The IMU is not fully enabled by default since it depends on the
 Wire library, which uses about 1400 bytes of additional code space
 and defines an interrupt service routine (ISR) that might be
 incompatible with some applications (such as our TWISlave example).
 
-Include Tpp32U4IMU.h in one of your cpp/ino files to enable IMU
-functionality.
+Include Pololu3piPlus32U4IMU.h in one of your cpp/ino files to
+enable IMU functionality.
 */
-#include <Tpp32U4IMU.h>
+#include <Pololu3piPlus32U4IMU.h>
 
-Tpp32U4LCD lcd;
-Tpp32U4Buzzer buzzer;
-Tpp32U4ButtonA buttonA;
-Tpp32U4ButtonB buttonB;
-Tpp32U4ButtonC buttonC;
-Tpp32U4LineSensors lineSensors;
-Tpp32U4BumpSensors bumpSensors;
-Tpp32U4IMU imu;
-Tpp32U4Motors motors;
-Tpp32U4Encoders encoders;
+using namespace Pololu3piPlus32U4;
+
+LCD lcd;
+Buzzer buzzer;
+ButtonA buttonA;
+ButtonB buttonB;
+ButtonC buttonC;
+LineSensors lineSensors;
+BumpSensors bumpSensors;
+IMU imu;
+Motors motors;
+Encoders encoders;
 
 char buttonMonitor();
 
@@ -474,20 +476,12 @@ void lineSensorDemo()
   lcd.print('C');
 
   uint16_t lineSensorValues[5];
-  char c;
 
   while (buttonMonitor() != 'B')
   {
     bool emittersOff = buttonC.isPressed();
 
-    if (emittersOff)
-    {
-      lineSensors.read(lineSensorValues, QTRReadMode::Off);
-    }
-    else
-    {
-      lineSensors.read(lineSensorValues, QTRReadMode::On);
-    }
+    lineSensors.read(lineSensorValues, emittersOff ? LineSensorsReadMode::Off :  LineSensorsReadMode::On);
 
     lcd.gotoXY(1, 0);
     for (uint8_t i = 0; i < 5; i++)
@@ -629,9 +623,9 @@ void inertialDemo()
 // values to these values.
 void compassDemo()
 {
-  Tpp32U4IMU::vector<int16_t> magMax;
-  Tpp32U4IMU::vector<int16_t> magMin;
-  Tpp32U4IMU::vector<int16_t> m;
+  IMU::vector<int16_t> magMax;
+  IMU::vector<int16_t> magMin;
+  IMU::vector<int16_t> m;
   bool showReadings = false;
   bool firstReading = true;
 
@@ -877,8 +871,6 @@ void encoderDemo()
 // Spin in place
 void spinDemo()
 {
-  uint16_t startTime = millis();
-
   lcd.clear();
   displayBackArrow();
   lcd.print(F("Spinning"));
@@ -949,7 +941,7 @@ void musicDemo()
 {
   displayBackArrow();
 
-  uint8_t fugueTitlePos = 0;
+  size_t fugueTitlePos = 0;
   uint16_t lastShiftTime = millis() - 2000;
 
   while (buttonMonitor() != 'B')
@@ -1016,8 +1008,6 @@ void powerDemo()
 // other demos that set custom characters then return here, you will see
 // what they loaded.
 void lcdDemo() {
-  uint8_t textPos = 0;
-  uint16_t lastShiftTime = millis() - 2000;
   displayBackArrow();
   lcd.gotoXY(7,1);
   lcd.print('C');
@@ -1051,7 +1041,7 @@ const char aboutText[] PROGMEM =
   "       Pololu 3pi+ 32U4 Robot - more info at pololu.com/3pi+       ";
 
 void aboutDemo() {
-  uint8_t textPos = 0;
+  size_t textPos = 0;
   uint16_t lastShiftTime = millis() - 2000;
   displayBackArrow();
 

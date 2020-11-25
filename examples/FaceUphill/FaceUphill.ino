@@ -1,4 +1,4 @@
-/* This demo uses the Tpp 32U4's accelerometer to detect
+/* This demo uses the 3pi+ 32U4's accelerometer to detect
 whether it is on a slanted surface.  If it is on a slanted
 surface, then it uses the motors to face uphill.
 
@@ -6,11 +6,11 @@ It also uses the encoders to avoid rolling down the surface.
 
 Please note that this example is not very robust and it might be
 hard to modify it to behave differently.  The accelerometer
-readings are affected by the movement of the Tpp, so if you
+readings are affected by the movement of the 3pi+, so if you
 change the code for controlling the motors, you might also affect
 the accelerometer readings.
 
-This code was tested on a Tpp with 4 NiMH batteries and two 75:1
+This code was tested on a 3pi+ with 4 NiMH batteries and two 75:1
 HP micro metal gearmotors.  If you have different batteries or
 motors, you might need to adjust the formula for computing
 turnSpeed.
@@ -20,25 +20,27 @@ move, because the y component of the acceleration would be close
 to 0. */
 
 #include <Wire.h>
-#include <Tpp32U4.h>
+#include <Pololu3piPlus32U4.h>
 
 /* The IMU is not fully enabled by default since it depends on the
 Wire library, which uses about 1400 bytes of additional code space
 and defines an interrupt service routine (ISR) that might be
 incompatible with some applications (such as our TWISlave example).
 
-Include Tpp32U4IMU.h in one of your cpp/ino files to enable IMU
-functionality.
+Include Pololu3piPlus32U4IMU.h in one of your cpp/ino files to
+enable IMU functionality.
 */
-#include <Tpp32U4IMU.h>
+#include <Pololu3piPlus32U4IMU.h>
+
+using namespace Pololu3piPlus32U4;
 
 const int16_t maxSpeed = 100;
 
-Tpp32U4IMU imu;
-Tpp32U4Motors motors;
-Tpp32U4LCD lcd;
-Tpp32U4ButtonA buttonA;
-Tpp32U4Encoders encoders;
+IMU imu;
+Motors motors;
+LCD lcd;
+ButtonA buttonA;
+Encoders encoders;
 
 void setup()
 {

@@ -1,10 +1,13 @@
 // Copyright Pololu Corporation.  For more information, see http://www.pololu.com/
 
-/*! \file Tpp32U4Encoders.h */
+/*! \file Pololu3piPlus32U4Encoders.h */
 
 #pragma once
 
 #include <stdint.h>
+
+namespace Pololu3piPlus32U4
+{
 
 /*! \brief Reads counts from the encoders on the 3pi+ 32U4.
  *
@@ -23,7 +26,7 @@
  * will be a compile-time conflict with any other code that defines an ISR for
  * an external interrupt directly instead of using attachInterrupt().
  */
-class Tpp32U4Encoders
+class Encoders
 {
 
 public:
@@ -87,3 +90,5 @@ private:
 
     static void init2();
 };
+
+}

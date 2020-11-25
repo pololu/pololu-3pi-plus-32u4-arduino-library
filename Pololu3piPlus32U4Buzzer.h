@@ -1,10 +1,13 @@
 // Copyright Pololu Corporation.  For more information, see http://www.pololu.com/
 
-/*! \file Tpp32U4Buzzer.h */
+/*! \file Pololu3piPlus32U4Buzzer.h */
 
 #pragma once
 
 #include <PololuBuzzer.h>
+
+namespace Pololu3piPlus32U4
+{
 
 /*! \brief Plays beeps and music on the buzzer on the 3pi+ 32U4.
  *
@@ -20,10 +23,12 @@
  * (perhaps several hundred microseconds) every time it starts a new note. It is
  * important to take this into account when writing timing-critical code.
  */
-class Tpp32U4Buzzer : public PololuBuzzer
+class Buzzer : public PololuBuzzer
 {
     // This is a trivial subclass of PololuBuzzer; it exists because we wanted
-    // the Tpp32U4 class names to be consistent and we didn't just use a typedef
+    // the class names to be consistent and we didn't just use a typedef
     // to define it because that would make the Doxygen documentation harder to
     // understand.
 };
+
+}

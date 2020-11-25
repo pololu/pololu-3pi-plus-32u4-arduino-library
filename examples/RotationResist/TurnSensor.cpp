@@ -5,6 +5,8 @@ measure how much the robot has turned about its Z axis. */
 #include <Wire.h>
 #include "TurnSensor.h"
 
+using namespace Pololu3piPlus32U4;
+
 /* turnAngle is a 32-bit unsigned integer representing the amount
 the robot has turned since the last time turnSensorReset was
 called.  This is computed solely using the Z axis of the gyro, so

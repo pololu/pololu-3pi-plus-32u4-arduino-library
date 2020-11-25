@@ -1,6 +1,6 @@
 // Copyright Pololu Corporation.  For more information, see http://www.pololu.com/
 
-/** \file Tpp32U4Buttons.h **/
+/** \file Pololu3piPlus32U4Buttons.h **/
 
 #pragma once
 
@@ -9,20 +9,17 @@
 #include <USBPause.h>
 #include <util/delay.h>
 
-/*! The pin number for the pin connected to button A on the 3pi+ 32U4. */
-#define TPP_32U4_BUTTON_A 14
-
-/*! The pin number for the pin connected to button B on the 3pi+ 32U4. */
-#define TPP_32U4_BUTTON_B IO_D5
-
-/*! The pin number for the pin conencted to button C on the 3pi+ 32U4. */
-#define TPP_32U4_BUTTON_C 17
+namespace Pololu3piPlus32U4
+{
 
 /*! \brief Interfaces with button A on the 3pi+ 32U4. */
-class Tpp32U4ButtonA : public Pushbutton
+class ButtonA : public Pushbutton
 {
 public:
-    Tpp32U4ButtonA() : Pushbutton(TPP_32U4_BUTTON_A)
+    /*! The pin number for the pin connected to button A on the 3pi+ 32U4. */
+    static const uint8_t buttonAPin = 14;
+
+    ButtonA() : Pushbutton(buttonAPin)
     {
     }
 };
@@ -37,17 +34,19 @@ public:
  * This class temporarily sets the pin to be an input without a pull-up
  * resistor.  The pull-up resistor is not needed because of the resistors on the
  * board. */
-class Tpp32U4ButtonB : public PushbuttonBase
+class ButtonB : public PushbuttonBase
 {
 public:
+    /*! The pin number for the pin connected to button B on the 3pi+ 32U4. */
+    static const uint8_t buttonBPin = IO_D5;
 
     virtual bool isPressed()
     {
         USBPause usbPause;
-        FastGPIO::PinLoan<TPP_32U4_BUTTON_B> loan;
-        FastGPIO::Pin<TPP_32U4_BUTTON_B>::setInputPulledUp();
+        FastGPIO::PinLoan<buttonBPin> loan;
+        FastGPIO::Pin<buttonBPin>::setInputPulledUp();
         _delay_us(3);
-        return !FastGPIO::Pin<TPP_32U4_BUTTON_B>::isInputHigh();
+        return !FastGPIO::Pin<buttonBPin>::isInputHigh();
     }
 };
 
@@ -61,17 +60,20 @@ public:
  * This class temporarily sets the pin to be an input without a pull-up
  * resistor.  The pull-up resistor is not needed because of the resistors on the
  * board. */
-class Tpp32U4ButtonC : public PushbuttonBase
+class ButtonC : public PushbuttonBase
 {
 public:
+    /*! The pin number for the pin conencted to button C on the 3pi+ 32U4. */
+    static const uint8_t buttonCPin = 17;
 
     virtual bool isPressed()
     {
         USBPause usbPause;
-        FastGPIO::PinLoan<TPP_32U4_BUTTON_C> loan;
-        FastGPIO::Pin<TPP_32U4_BUTTON_C>::setInputPulledUp();
+        FastGPIO::PinLoan<buttonCPin> loan;
+        FastGPIO::Pin<buttonCPin>::setInputPulledUp();
         _delay_us(3);
-        return !FastGPIO::Pin<TPP_32U4_BUTTON_C>::isInputHigh();
+        return !FastGPIO::Pin<buttonCPin>::isInputHigh();
     }
 };
 
+}

@@ -1,10 +1,14 @@
 // Copyright Pololu Corporation.  For more information, see http://www.pololu.com/
 
-/*! \file Tpp32U4IMU.h */
+/*! \file IMU.h */
 
 #pragma once
 
 #include <Arduino.h>
+
+namespace Pololu3piPlus32U4
+{
+
 
 /*! \anchor device_addresses
  *
@@ -38,22 +42,22 @@
 /*! @} */
 
 /*! \brief The type of the inertial sensors. */
-enum class Tpp32U4IMUType : uint8_t {
+enum class IMUType : uint8_t {
   /*! Unknown or unrecognized */
   Unknown,
   /*! LSM6DS33 gyro + accelerometer, LIS3MDL magnetometer */
   LSM6DS33_LIS3MDL
 };
 
-/*! \brief Interfaces with the inertial sensors on the Tpp 32U4.
+/*! \brief Interfaces with the inertial sensors on the 3pi+ 32U4.
  *
  * This class allows you to configure and get readings from the I2C sensors that
- * make up the Tpp 32U4's inertial measurement unit (IMU): gyro, accelerometer,
+ * make up the 3pi+ 32U4's inertial measurement unit (IMU): gyro, accelerometer,
  * and magnetometer.
  *
  * You must call `Wire.start()` before using any of this library's functions
  * that access the sensors. */
-class Tpp32U4IMU
+class IMU
 {
 public:
 
@@ -83,12 +87,12 @@ public:
    */
   bool init();
 
-  /*! \brief Returns the type of the inertial sensors on the Tpp 32U4.
+  /*! \brief Returns the type of the inertial sensors on the 3pi+ 32U4.
    *
-   * \return The sensor type as a member of the Tpp32U4IMUType enum. If the
+   * \return The sensor type as a member of the IMUType enum. If the
    * type is not known (e.g. if init() has not been called yet), this will be
-   * Tpp32U4IMUType::Unknown. */
-  Tpp32U4IMUType getType() { return type; }
+   * IMUType::Unknown. */
+  IMUType getType() { return type; }
 
   /*! \brief Enables all of the inertial sensors with a default configuration.
    */
@@ -158,8 +162,10 @@ public:
 private:
 
   uint8_t lastError = 0;
-  Tpp32U4IMUType type = Tpp32U4IMUType::Unknown;
+  IMUType type = IMUType::Unknown;
 
   int16_t testReg(uint8_t addr, uint8_t reg);
   void readAxes16Bit(uint8_t addr, uint8_t firstReg, vector<int16_t> & v);
 };
+
+}

@@ -1,14 +1,17 @@
-#include <Tpp32U4IMU_declaration.h>
+#include <Pololu3piPlus32U4IMU_declaration.h>
 
 #define LSM6DS33_WHO_ID 0x69
 #define LIS3MDL_WHO_ID  0x3D
 
-bool Tpp32U4IMU::init()
+namespace Pololu3piPlus32U4
+{
+
+bool IMU::init()
 {
   if (testReg(LSM6DS33_ADDR, LSM6DS33_REG_WHO_AM_I) == LSM6DS33_WHO_ID &&
       testReg( LIS3MDL_ADDR,  LIS3MDL_REG_WHO_AM_I) ==  LIS3MDL_WHO_ID)
   {
-    type = Tpp32U4IMUType::LSM6DS33_LIS3MDL;
+    type = IMUType::LSM6DS33_LIS3MDL;
     return true;
   }
   else
@@ -17,11 +20,11 @@ bool Tpp32U4IMU::init()
   }
 }
 
-void Tpp32U4IMU::enableDefault()
+void IMU::enableDefault()
 {
   switch (type)
   {
-  case Tpp32U4IMUType::LSM6DS33_LIS3MDL:
+  case IMUType::LSM6DS33_LIS3MDL:
 
     // Accelerometer
 
@@ -68,11 +71,11 @@ void Tpp32U4IMU::enableDefault()
   }
 }
 
-void Tpp32U4IMU::configureForTurnSensing()
+void IMU::configureForTurnSensing()
 {
   switch (type)
   {
-  case Tpp32U4IMUType::LSM6DS33_LIS3MDL:
+  case IMUType::LSM6DS33_LIS3MDL:
 
     // Gyro
 
@@ -83,11 +86,11 @@ void Tpp32U4IMU::configureForTurnSensing()
   }
 }
 
-void Tpp32U4IMU::configureForFaceUphill()
+void IMU::configureForFaceUphill()
 {
   switch (type)
   {
-  case Tpp32U4IMUType::LSM6DS33_LIS3MDL:
+  case IMUType::LSM6DS33_LIS3MDL:
 
     // Accelerometer
 
@@ -98,11 +101,11 @@ void Tpp32U4IMU::configureForFaceUphill()
   }
 }
 
-void Tpp32U4IMU::configureForCompassHeading()
+void IMU::configureForCompassHeading()
 {
   switch (type)
   {
-  case Tpp32U4IMUType::LSM6DS33_LIS3MDL:
+  case IMUType::LSM6DS33_LIS3MDL:
 
     // Magnetometer
 
@@ -114,11 +117,11 @@ void Tpp32U4IMU::configureForCompassHeading()
 }
 
 // Reads the 3 accelerometer channels and stores them in vector a
-void Tpp32U4IMU::readAcc(void)
+void IMU::readAcc(void)
 {
   switch (type)
   {
-  case Tpp32U4IMUType::LSM6DS33_LIS3MDL:
+  case IMUType::LSM6DS33_LIS3MDL:
     // assumes register address auto-increment is enabled (IF_INC in CTRL3_C)
     readAxes16Bit(LSM6DS33_ADDR, LSM6DS33_REG_OUTX_L_XL, a);
     return;
@@ -126,11 +129,11 @@ void Tpp32U4IMU::readAcc(void)
 }
 
 // Reads the 3 gyro channels and stores them in vector g
-void Tpp32U4IMU::readGyro()
+void IMU::readGyro()
 {
   switch (type)
   {
-  case Tpp32U4IMUType::LSM6DS33_LIS3MDL:
+  case IMUType::LSM6DS33_LIS3MDL:
     // assumes register address auto-increment is enabled (IF_INC in CTRL3_C)
     readAxes16Bit(LSM6DS33_ADDR, LSM6DS33_REG_OUTX_L_G, g);
     return;
@@ -138,11 +141,11 @@ void Tpp32U4IMU::readGyro()
 }
 
 // Reads the 3 magnetometer channels and stores them in vector m
-void Tpp32U4IMU::readMag()
+void IMU::readMag()
 {
   switch (type)
   {
-  case Tpp32U4IMUType::LSM6DS33_LIS3MDL:
+  case IMUType::LSM6DS33_LIS3MDL:
     // set MSB of register address for auto-increment
     readAxes16Bit(LIS3MDL_ADDR, LIS3MDL_REG_OUT_X_L | (1 << 7), m);
     return;
@@ -151,7 +154,7 @@ void Tpp32U4IMU::readMag()
 
 // Reads all 9 accelerometer, gyro, and magnetometer channels and stores them
 // in the respective vectors
-void Tpp32U4IMU::read()
+void IMU::read()
 {
   readAcc();
   if (lastError) { return; }
@@ -160,32 +163,34 @@ void Tpp32U4IMU::read()
   readMag();
 }
 
-bool Tpp32U4IMU::accDataReady()
+bool IMU::accDataReady()
 {
   switch (type)
   {
-  case Tpp32U4IMUType::LSM6DS33_LIS3MDL:
+  case IMUType::LSM6DS33_LIS3MDL:
     return readReg(LSM6DS33_ADDR, LSM6DS33_REG_STATUS_REG) & 0x01;
   }
   return false;
 }
 
-bool Tpp32U4IMU::gyroDataReady()
+bool IMU::gyroDataReady()
 {
   switch (type)
   {
-  case Tpp32U4IMUType::LSM6DS33_LIS3MDL:
+  case IMUType::LSM6DS33_LIS3MDL:
     return readReg(LSM6DS33_ADDR, LSM6DS33_REG_STATUS_REG) & 0x02;
   }
   return false;
 }
 
-bool Tpp32U4IMU::magDataReady()
+bool IMU::magDataReady()
 {
   switch (type)
   {
-  case Tpp32U4IMUType::LSM6DS33_LIS3MDL:
+  case IMUType::LSM6DS33_LIS3MDL:
     return readReg(LIS3MDL_ADDR, LIS3MDL_REG_STATUS_REG) & 0x08;
   }
   return false;
+}
+
 }

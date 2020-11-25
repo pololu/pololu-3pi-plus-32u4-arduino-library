@@ -1,7 +1,9 @@
 // This example shows how to blink the three user LEDs on the
 // 3pi+ 32U4.
 
-#include <Tpp32U4.h>
+#include <Pololu3piPlus32U4.h>
+
+using namespace Pololu3piPlus32U4;
 
 void setup()
 {

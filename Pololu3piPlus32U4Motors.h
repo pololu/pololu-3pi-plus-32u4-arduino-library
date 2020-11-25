@@ -1,16 +1,19 @@
 // Copyright Pololu Corporation.  For more information, see http://www.pololu.com/
 
-/*! \file Tpp32U4Motors.h */
+/*! \file Motors.h */
 
 #pragma once
 
 #include <stdint.h>
 
+namespace Pololu3piPlus32U4
+{
+
 /*! \brief Controls motor speed and direction on the 3pi+ 32U4.
  *
  * This library uses Timer 1, so it will conflict with any other libraries using
  * that timer. */
-class Tpp32U4Motors
+class Motors
 {
   public:
 
@@ -79,3 +82,5 @@ class Tpp32U4Motors
     static bool flipLeft;
     static bool flipRight;
 };
+
+}

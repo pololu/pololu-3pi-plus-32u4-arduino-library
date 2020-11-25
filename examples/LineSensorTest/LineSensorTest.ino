@@ -6,10 +6,12 @@
 // press the "C" button to toggle whether the IR emitters are on during the
 // reading.
 
-#include <Tpp32U4.h>
+#include <Pololu3piPlus32U4.h>
 
-Tpp32U4ButtonC buttonC;
-Tpp32U4LineSensors lineSensors;
+using namespace Pololu3piPlus32U4;
+
+ButtonC buttonC;
+LineSensors lineSensors;
 
 const uint8_t SensorCount = 5;
 uint16_t sensorValues[SensorCount];
@@ -46,7 +48,7 @@ void loop()
     lastSampleTime = millis();
 
     // Read the line sensors.
-    lineSensors.read(sensorValues, useEmitters ? QTRReadMode::On : QTRReadMode::Off);
+    lineSensors.read(sensorValues, useEmitters ? LineSensorsReadMode::On : LineSensorsReadMode::Off);
 
     // Send the results to the LCD and to the serial monitor.
     printReadingsToSerial();

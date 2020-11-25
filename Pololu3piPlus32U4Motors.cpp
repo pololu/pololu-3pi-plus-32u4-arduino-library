@@ -1,19 +1,22 @@
 // Copyright Pololu Corporation.  For more information, see http://www.pololu.com/
 
-#include <Tpp32U4Motors.h>
+#include <Pololu3piPlus32U4Motors.h>
 #include <FastGPIO.h>
 #include <avr/io.h>
+
+namespace Pololu3piPlus32U4
+{
 
 #define PWM_L 10
 #define PWM_R 9
 #define DIR_L 16
 #define DIR_R 15
 
-bool Tpp32U4Motors::flipLeft = false;
-bool Tpp32U4Motors::flipRight = false;
+bool Motors::flipLeft = false;
+bool Motors::flipRight = false;
 
 // initialize timer1 to generate the proper PWM outputs to the motor drivers
-void Tpp32U4Motors::init2()
+void Motors::init2()
 {
     FastGPIO::Pin<PWM_L>::setOutputLow();
     FastGPIO::Pin<PWM_R>::setOutputLow();
@@ -35,17 +38,17 @@ void Tpp32U4Motors::init2()
     OCR1B = 0;
 }
 
-void Tpp32U4Motors::flipLeftMotor(bool flip)
+void Motors::flipLeftMotor(bool flip)
 {
     flipLeft = flip;
 }
 
-void Tpp32U4Motors::flipRightMotor(bool flip)
+void Motors::flipRightMotor(bool flip)
 {
     flipRight = flip;
 }
 
-void Tpp32U4Motors::setLeftSpeed(int16_t speed)
+void Motors::setLeftSpeed(int16_t speed)
 {
     init();
 
@@ -66,7 +69,7 @@ void Tpp32U4Motors::setLeftSpeed(int16_t speed)
     FastGPIO::Pin<DIR_L>::setOutput(reverse ^ flipLeft);
 }
 
-void Tpp32U4Motors::setRightSpeed(int16_t speed)
+void Motors::setRightSpeed(int16_t speed)
 {
     init();
 
@@ -87,8 +90,10 @@ void Tpp32U4Motors::setRightSpeed(int16_t speed)
     FastGPIO::Pin<DIR_R>::setOutput(reverse ^ flipRight);
 }
 
-void Tpp32U4Motors::setSpeeds(int16_t leftSpeed, int16_t rightSpeed)
+void Motors::setSpeeds(int16_t leftSpeed, int16_t rightSpeed)
 {
     setLeftSpeed(leftSpeed);
     setRightSpeed(rightSpeed);
+}
+
 }

@@ -8,9 +8,12 @@ incompatible with some applications (such as our TWISlave example).
 */
 #pragma once
 #include <Wire.h>
-#include <Tpp32U4IMU_declaration.h>
+#include <Pololu3piPlus32U4IMU_declaration.h>
 
-void Tpp32U4IMU::writeReg(uint8_t addr, uint8_t reg, uint8_t value)
+namespace Pololu3piPlus32U4
+{
+
+void IMU::writeReg(uint8_t addr, uint8_t reg, uint8_t value)
 {
   Wire.beginTransmission(addr);
   Wire.write(reg);
@@ -18,7 +21,7 @@ void Tpp32U4IMU::writeReg(uint8_t addr, uint8_t reg, uint8_t value)
   lastError = Wire.endTransmission();
 }
 
-uint8_t Tpp32U4IMU::readReg(uint8_t addr, uint8_t reg)
+uint8_t IMU::readReg(uint8_t addr, uint8_t reg)
 {
   Wire.beginTransmission(addr);
   Wire.write(reg);
@@ -34,7 +37,7 @@ uint8_t Tpp32U4IMU::readReg(uint8_t addr, uint8_t reg)
   return Wire.read();
 }
 
-int16_t Tpp32U4IMU::testReg(uint8_t addr, uint8_t reg)
+int16_t IMU::testReg(uint8_t addr, uint8_t reg)
 {
   Wire.beginTransmission(addr);
   Wire.write(reg);
@@ -51,7 +54,7 @@ int16_t Tpp32U4IMU::testReg(uint8_t addr, uint8_t reg)
   return Wire.read();
 }
 
-void Tpp32U4IMU::readAxes16Bit(uint8_t addr, uint8_t firstReg, vector<int16_t> & v)
+void IMU::readAxes16Bit(uint8_t addr, uint8_t firstReg, vector<int16_t> & v)
 {
   Wire.beginTransmission(addr);
   Wire.write(firstReg);
@@ -75,4 +78,6 @@ void Tpp32U4IMU::readAxes16Bit(uint8_t addr, uint8_t firstReg, vector<int16_t> &
   v.x = (int16_t)(xh << 8 | xl);
   v.y = (int16_t)(yh << 8 | yl);
   v.z = (int16_t)(zh << 8 | zl);
+}
+
 }

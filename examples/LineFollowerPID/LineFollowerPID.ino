@@ -6,7 +6,7 @@ This example has been tested with robots using 30:1 MP motors.
 Modifications might be required for it to work well on different
 courses or with different motors. */
 
-#include <Tpp32U4.h>
+#include <Pololu3piPlus32U4.h>
 
 // This is the maximum speed the motors will be allowed to turn.
 // A maxSpeed of 400 would let the motors go at top speed, but
@@ -17,11 +17,13 @@ courses or with different motors. */
 // often have to adjust the PID constants too for it to work well.
 const uint16_t maxSpeed = 200;
 
-Tpp32U4Buzzer buzzer;
-Tpp32U4LineSensors lineSensors;
-Tpp32U4Motors motors;
-Tpp32U4ButtonB buttonB;
-Tpp32U4LCD lcd;
+using namespace Pololu3piPlus32U4;
+
+Buzzer buzzer;
+LineSensors lineSensors;
+Motors motors;
+ButtonB buttonB;
+LCD lcd;
 
 int16_t lastError = 0;
 
@@ -47,7 +49,7 @@ void loadCustomCharacters()
 void printBar(uint8_t height)
 {
   if (height > 8) { height = 8; }
-  const char barChars[] = {' ', 0, 1, 2, 3, 4, 5, 6, 255};
+  const char barChars[] = {' ', 0, 1, 2, 3, 4, 5, 6, (char)255};
   lcd.print(barChars[height]);
 }
 
