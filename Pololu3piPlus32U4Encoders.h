@@ -31,6 +31,16 @@ class Encoders
 
 public:
 
+    /** \brief Flips the direction of the encoders.
+     *
+     * This is useful if you have to flip the direction of the motors
+     * due to a non-standard gearbox.
+     *
+     * \params flip If true, the direction of counting will be
+     * reversed relative to the standard 3pi+.
+     */
+    static void flipEncoders(bool flip);
+
     /*! This function initializes the encoders if they have not been initialized
      *  already and starts listening for counts.  This
      *  function is called automatically whenever you call any other function in
@@ -89,6 +99,7 @@ public:
 private:
 
     static void init2();
+    static bool flip;
 };
 
 }

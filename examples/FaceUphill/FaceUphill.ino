@@ -58,7 +58,8 @@ void selectHyper()
 {
   motors.flipLeftMotor(true);
   motors.flipRightMotor(true);
-  maxSpeed = 50;
+  encoders.flipEncoders(true);
+  maxSpeed = 75;
 }
 
 void selectStandard()

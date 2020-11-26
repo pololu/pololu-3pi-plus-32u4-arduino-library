@@ -91,6 +91,13 @@ void Encoders::init2()
     errorRight = 0;
 }
 
+bool Encoders::flip;
+
+void Encoders::flipEncoders(bool f)
+{
+  flip = f;
+}
+
 int16_t Encoders::getCountsLeft()
 {
     init();
@@ -98,7 +105,7 @@ int16_t Encoders::getCountsLeft()
     cli();
     int16_t counts = countLeft;
     sei();
-    return counts;
+    return flip ? -counts : counts;
 }
 
 int16_t Encoders::getCountsRight()
@@ -108,7 +115,7 @@ int16_t Encoders::getCountsRight()
     cli();
     int16_t counts = countRight;
     sei();
-    return counts;
+    return flip ? -counts : counts;
 }
 
 int16_t Encoders::getCountsAndResetLeft()
@@ -119,7 +126,7 @@ int16_t Encoders::getCountsAndResetLeft()
     int16_t counts = countLeft;
     countLeft = 0;
     sei();
-    return counts;
+    return flip ? -counts : counts;
 }
 
 int16_t Encoders::getCountsAndResetRight()
@@ -130,7 +137,7 @@ int16_t Encoders::getCountsAndResetRight()
     int16_t counts = countRight;
     countRight = 0;
     sei();
-    return counts;
+    return flip ? -counts : counts;
 }
 
 bool Encoders::checkErrorLeft()
