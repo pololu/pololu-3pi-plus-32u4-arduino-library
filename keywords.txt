@@ -1,0 +1,122 @@
+Pololu3piPlus32U4	KEYWORD1
+
+ledRed	KEYWORD2
+ledYellow	KEYWORD2
+ledGreen	KEYWORD2
+usbPowerPresent	KEYWORD2
+readBatteryMillivolts	KEYWORD2
+
+##############################################
+
+BumpSide	KEYWORD1
+
+BumpLeft	LITERAL1
+BumpRight	LITERAL1
+
+BumpSensors	KEYWORD1
+
+calibrate	KEYWORD2
+read	KEYWORD2
+leftChanged	KEYWORD2
+leftIsPressed	KEYWORD2
+rightChanged	KEYWORD2
+rightIsPressed	KEYWORD2
+
+##############################################
+
+ButtonA	KEYWORD1
+ButtonB	KEYWORD1
+ButtonC	KEYWORD1
+
+##############################################
+
+Buzzer	KEYWORD1
+
+##############################################
+
+Encoders	KEYWORD1
+init	KEYWORD2
+getCountsLeft	KEYWORD2
+getCountsRight	KEYWORD2
+getCountsAndResetLeft	KEYWORD2
+getCountsAndResetRight	KEYWORD2
+checkErrorLeft	KEYWORD2
+checkErrorRight	KEYWORD2
+
+##############################################
+
+IMU	KEYWORD1
+IMUType	KEYWORD1
+
+LSM6DS33_ADDR	LITERAL1
+LIS3MDL_ADDR	LITERAL1
+LSM6DS33_REG_WHO_AM_I	LITERAL1
+LSM6DS33_REG_CTRL1_XL	LITERAL1
+LSM6DS33_REG_CTRL2_G	LITERAL1
+LSM6DS33_REG_CTRL3_C	LITERAL1
+LSM6DS33_REG_STATUS_REG	LITERAL1
+LSM6DS33_REG_OUTX_L_G	LITERAL1
+LSM6DS33_REG_OUTX_L_XL	LITERAL1
+LIS3MDL_REG_WHO_AM_I	LITERAL1
+LIS3MDL_REG_CTRL_REG1	LITERAL1
+LIS3MDL_REG_CTRL_REG2	LITERAL1
+LIS3MDL_REG_CTRL_REG3	LITERAL1
+LIS3MDL_REG_CTRL_REG4	LITERAL1
+LIS3MDL_REG_STATUS_REG	LITERAL1
+LIS3MDL_REG_OUT_X_L	LITERAL1
+
+getLastError	KEYWORD2
+init	KEYWORD2
+getType	KEYWORD2
+enableDefault	KEYWORD2
+configureForTurnSensing	KEYWORD2
+configureForFaceUphill	KEYWORD2
+configureForCompassHeading	KEYWORD2
+writeReg	KEYWORD2
+readReg	KEYWORD2
+readAcc	KEYWORD2
+readGyro	KEYWORD2
+readMag	KEYWORD2
+read	KEYWORD2
+accDataReady	KEYWORD2
+gyroDataReady	KEYWORD2
+magDataReady	KEYWORD2
+
+##############################################
+
+LCD	KEYWORD1
+
+##############################################
+
+LineSensorsReadMode	KEYWORD1
+Off	LITERAL1
+On	LITERAL1
+Manual	LITERAL1
+
+LineSensors	KEYWORD1
+
+setTimeout	KEYWORD2
+getTimeout	KEYWORD2
+calibrate	KEYWORD2
+resetCalibration	KEYWORD2
+read	KEYWORD2
+readCalibrated	KEYWORD2
+readLineBlack	KEYWORD2
+readLineWhite	KEYWORD2
+
+CalibrationData	KEYWORD1
+
+emittersOn	KEYWORD2
+emittersOff	KEYWORD2
+
+##############################################
+
+Motors	KEYWORD1
+
+flipLeftMotor	KEYWORD2
+flipRightMotor	KEYWORD2
+setLeftSpeed	KEYWORD2
+setRightSpeed	KEYWORD2
+setSpeeds	KEYWORD2
+
+##############################################
