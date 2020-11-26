@@ -7,6 +7,31 @@ Modifications might be required for it to work well on different
 courses or with different motors. */
 
 #include <Pololu3piPlus32U4.h>
+#include <PololuMenu.h>
+
+using namespace Pololu3piPlus32U4;
+
+Buzzer buzzer;
+LineSensors lineSensors;
+Motors motors;
+ButtonA buttonA;
+ButtonB buttonB;
+ButtonC buttonC;
+LCD lcd;
+
+int16_t lastError = 0;
+
+#define NUM_SENSORS 5
+unsigned int lineSensorValues[NUM_SENSORS];
+
+/* Configuration for specific 3pi+ editions: the Standard, Turtle, and
+Hyper versions of 3pi+ have different motor configurations, requiring
+the demo to be configured with different parameters for proper
+operation.  The following functions set up these parameters using a
+menu that runs at the beginning of the program.  To bypass the menu,
+you can replace the call to selectEdition() in setup() with one of the
+specific functions.
+*/
 
 // This is the maximum speed the motors will be allowed to turn.
 // A maxSpeed of 400 would let the motors go at top speed, but
@@ -15,20 +40,86 @@ courses or with different motors. */
 // Note that making the 3pi+ go faster on a line following course
 // might involve more than just increasing this number; you will
 // often have to adjust the PID constants too for it to work well.
-const uint16_t maxSpeed = 200;
+uint16_t maxSpeed;
+int16_t minSpeed;
 
-using namespace Pololu3piPlus32U4;
+// This is the speed the motors will run when centered on the line.
+// Set to zero and set minSpeed to -maxSpeed to test the robot
+// without.
+uint16_t baseSpeed;
 
-Buzzer buzzer;
-LineSensors lineSensors;
-Motors motors;
-ButtonB buttonB;
-LCD lcd;
+uint16_t calibrationSpeed;
 
-int16_t lastError = 0;
+// PID configuration: This example is configured for a default
+// proportional constant of 1/4 and a derivative constant of 1, which
+// seems to work well at low speeds for all of our 3pi+ editions.  You
+// will probably want to use trial and error to tune these constants
+// for your particular 3pi+ and line course, especially if you
+// increase the speed.
 
-#define NUM_SENSORS 5
-unsigned int lineSensorValues[NUM_SENSORS];
+uint16_t proportional; // coefficient of the P term * 256
+uint16_t derivative; // coefficient of the D term * 256
+
+void selectHyper()
+{
+  motors.flipLeftMotor(true);
+  motors.flipRightMotor(true);
+  // Encoders are not used in this example.
+  // encoders.flipEncoders(true);
+  maxSpeed = 100;
+  minSpeed = 0;
+  baseSpeed = maxSpeed;
+  calibrationSpeed = 50;
+  proportional = 64; // P coefficient = 1/4
+  derivative = 256; // D coefficient = 1
+}
+
+void selectStandard()
+{
+  maxSpeed = 200;
+  minSpeed = 0;
+  baseSpeed = maxSpeed;
+  calibrationSpeed = 60;
+  proportional = 64; // P coefficient = 1/4
+  derivative = 256; // D coefficient = 1
+}
+
+void selectTurtle()
+{
+  maxSpeed = 400;
+  minSpeed = 0;
+  baseSpeed = 400;
+  calibrationSpeed = 120;
+  proportional = 64; // P coefficient = 1/4
+  derivative = 256; // D coefficient = 1
+}
+
+PololuMenu menu;
+
+void selectEdition()
+{
+  lcd.clear();
+  lcd.print(F("Select"));
+  lcd.gotoXY(0,1);
+  lcd.print(F("edition"));
+  delay(1000);
+
+  static const PololuMenu::Item items[] = {
+    { F("Hyper"), selectHyper },
+    { F("Standard"), selectStandard },
+    { F("Turtle"), selectTurtle },
+  };
+
+  menu.setItems(items, 3);
+  menu.setLcd(lcd);
+  menu.setBuzzer(buzzer);
+  menu.setButtons(buttonA, buttonB, buttonC);
+
+  while(!menu.select());
+
+  lcd.gotoXY(0,1);
+  lcd.print("OK!  ...");
+}
 
 // Sets up special characters in the LCD so that we can display
 // bar graphs.
@@ -64,11 +155,11 @@ void calibrateSensors()
   {
     if (i > 20 && i <= 60)
     {
-      motors.setSpeeds(-60, 60);
+      motors.setSpeeds(-(int16_t)calibrationSpeed, calibrationSpeed);
     }
     else
     {
-      motors.setSpeeds(60, -60);
+      motors.setSpeeds(calibrationSpeed, -(int16_t)calibrationSpeed);
     }
 
     lineSensors.calibrate();
@@ -111,6 +202,10 @@ void setup()
   // Play a little welcome song
   buzzer.play(">g32>>c32");
 
+  // To bypass the menu, replace this function with
+  // selectHyper(), selectStandard(), or selectTurtle().
+  selectEdition();
+
   // Wait for button B to be pressed and released.
   lcd.clear();
   lcd.print(F("Press B"));
@@ -143,19 +238,15 @@ void loop()
 
   // Get motor speed difference using proportional and derivative
   // PID terms (the integral term is generally not very useful
-  // for line following).  Here we are using a proportional
-  // constant of 1/4 and a derivative constant of 7/2 (3.5), which
-  // should work well for a 3pi+ with 30:1 MP motors.  You
-  // probably want to use trial and error to tune these constants
-  // for your particular 3pi+ and line course.
-  int16_t speedDifference = error / 4 + (error - lastError) * 7/2;
+  // for line following).
+  int16_t speedDifference = error * (int32_t)proportional / 256  + (error - lastError) * (int32_t)derivative / 256;
 
   lastError = error;
 
   // Get individual motor speeds.  The sign of speedDifference
   // determines if the robot turns left or right.
-  int16_t leftSpeed = (int16_t)maxSpeed + speedDifference;
-  int16_t rightSpeed = (int16_t)maxSpeed - speedDifference;
+  int16_t leftSpeed = (int16_t)baseSpeed + speedDifference;
+  int16_t rightSpeed = (int16_t)baseSpeed - speedDifference;
 
   // Constrain our motor speeds to be between 0 and maxSpeed.
   // One motor will always be turning at maxSpeed, and the other
@@ -163,8 +254,8 @@ void loop()
   // else it will be stationary.  For some applications, you
   // might want to allow the motor speed to go negative so that
   // it can spin in reverse.
-  leftSpeed = constrain(leftSpeed, 0, (int16_t)maxSpeed);
-  rightSpeed = constrain(rightSpeed, 0, (int16_t)maxSpeed);
+  leftSpeed = constrain(leftSpeed, minSpeed, (int16_t)maxSpeed);
+  rightSpeed = constrain(rightSpeed, minSpeed, (int16_t)maxSpeed);
 
   motors.setSpeeds(leftSpeed, rightSpeed);
 }
