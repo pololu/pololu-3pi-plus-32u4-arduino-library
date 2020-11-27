@@ -21,6 +21,7 @@ it down facing in a new position. */
 
 #include <Wire.h>
 #include <Pololu3piPlus32U4.h>
+#include <PololuMenu.h>
 
 /* The IMU is not fully enabled by default since it depends on the
 Wire library, which uses about 1400 bytes of additional code space
@@ -34,22 +35,83 @@ enable IMU functionality.
 
 #include "TurnSensor.h"
 
-// This is the maximum speed the motors will be allowed to turn.
-// A maxSpeed of 400 lets the motors go at top speed.  Decrease
-// this value to impose a speed limit.
-const int16_t maxSpeed = 400;
-
 using namespace Pololu3piPlus32U4;
 
 LCD lcd;
+Buzzer buzzer;
 ButtonA buttonA;
+ButtonB buttonB;
+ButtonC buttonC;
 Motors motors;
 IMU imu;
 
+/* Configuration for specific 3pi+ editions: the Standard, Turtle, and
+Hyper versions of 3pi+ have different motor configurations, requiring
+the demo to be configured with different parameters for proper
+operation.  The following functions set up these parameters using a
+menu that runs at the beginning of the program.  To bypass the menu,
+you can replace the call to selectEdition() in setup() with one of the
+specific functions.
+*/
+
+// This is the maximum speed the motors will be allowed to turn.
+// A maxSpeed of 400 lets the motors go at top speed.  Decrease
+// this value to impose a speed limit.
+int16_t maxSpeed;
+
+void selectHyper()
+{
+  motors.flipLeftMotor(true);
+  motors.flipRightMotor(true);
+  // Encoders are not used in this example.
+  // encoders.flipEncoders(true);
+  maxSpeed = 100;
+}
+
+void selectStandard()
+{
+  maxSpeed = 200;
+}
+
+void selectTurtle()
+{
+  maxSpeed = 400;
+}
+
+PololuMenu menu;
+
+void selectEdition()
+{
+  lcd.clear();
+  lcd.print(F("Select"));
+  lcd.gotoXY(0,1);
+  lcd.print(F("edition"));
+  delay(1000);
+
+  static const PololuMenu::Item items[] = {
+    { F("Hyper"), selectHyper },
+    { F("Standard"), selectStandard },
+    { F("Turtle"), selectTurtle },
+  };
+
+  menu.setItems(items, 3);
+  menu.setLcd(lcd);
+  menu.setBuzzer(buzzer);
+  menu.setButtons(buttonA, buttonB, buttonC);
+
+  while(!menu.select());
+
+  lcd.gotoXY(0,1);
+  lcd.print("OK!  ...");
+}
+
 void setup()
 {
+  // To bypass the menu, replace this function with
+  // selectHyper(), selectStandard(), or selectTurtle().
+  selectEdition();
+
   turnSensorSetup();
-  delay(500);
   turnSensorReset();
 
   lcd.clear();
