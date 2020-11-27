@@ -211,7 +211,7 @@ void setup()
   lcd.print(F("Press B"));
   lcd.gotoXY(0, 1);
   lcd.print(F("to calib"));
-  buttonB.waitForButton();
+  while(!buttonB.getSingleDebouncedPress());
 
   calibrateSensors();
 

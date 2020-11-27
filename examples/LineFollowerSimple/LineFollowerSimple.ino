@@ -3,24 +3,85 @@ a black line on a white background, using a simple conditional-
 based algorithm. */
 
 #include <Pololu3piPlus32U4.h>
-
-// This is the maximum speed the motors will be allowed to turn.
-// A maxSpeed of 400 lets the motors go at top speed.  Decrease
-// this value to impose a speed limit.
-const uint16_t maxSpeed = 200;
+#include <PololuMenu.h>
 
 using namespace Pololu3piPlus32U4;
 
 Buzzer buzzer;
 LineSensors lineSensors;
 Motors motors;
+ButtonA buttonA;
 ButtonB buttonB;
+ButtonC buttonC;
 LCD lcd;
-
-int16_t lastError = 0;
 
 #define NUM_SENSORS 5
 unsigned int lineSensorValues[NUM_SENSORS];
+
+/* Configuration for specific 3pi+ editions: the Standard, Turtle, and
+Hyper versions of 3pi+ have different motor configurations, requiring
+the demo to be configured with different parameters for proper
+operation.  The following functions set up these parameters using a
+menu that runs at the beginning of the program.  To bypass the menu,
+you can replace the call to selectEdition() in setup() with one of the
+specific functions.
+*/
+
+// This is the maximum speed the motors will be allowed to turn.
+// A maxSpeed of 400 lets the motors go at top speed.  Decrease
+// this value to impose a speed limit.
+uint16_t maxSpeed;
+
+uint16_t calibrationSpeed;
+
+void selectHyper()
+{
+  motors.flipLeftMotor(true);
+  motors.flipRightMotor(true);
+  // Encoders are not used in this example.
+  // encoders.flipEncoders(true);
+  maxSpeed = 75;
+  calibrationSpeed = 50;
+}
+
+void selectStandard()
+{
+  maxSpeed = 100;
+  calibrationSpeed = 60;
+}
+
+void selectTurtle()
+{
+  maxSpeed = 200;
+  calibrationSpeed = 120;
+}
+
+PololuMenu menu;
+
+void selectEdition()
+{
+  lcd.clear();
+  lcd.print(F("Select"));
+  lcd.gotoXY(0,1);
+  lcd.print(F("edition"));
+  delay(1000);
+
+  static const PololuMenu::Item items[] = {
+    { F("Hyper"), selectHyper },
+    { F("Standard"), selectStandard },
+    { F("Turtle"), selectTurtle },
+  };
+
+  menu.setItems(items, 3);
+  menu.setLcd(lcd);
+  menu.setBuzzer(buzzer);
+  menu.setButtons(buttonA, buttonB, buttonC);
+
+  while(!menu.select());
+
+  lcd.gotoXY(0,1);
+  lcd.print("OK!  ...");
+}
 
 // Sets up special characters in the LCD so that we can display
 // bar graphs.
@@ -56,11 +117,11 @@ void calibrateSensors()
   {
     if (i > 20 && i <= 60)
     {
-      motors.setSpeeds(-60, 60);
+      motors.setSpeeds(-(int16_t)calibrationSpeed, calibrationSpeed);
     }
     else
     {
-      motors.setSpeeds(60, -60);
+      motors.setSpeeds(calibrationSpeed, -(int16_t)calibrationSpeed);
     }
 
     lineSensors.calibrate();
@@ -103,12 +164,16 @@ void setup()
   // Play a little welcome song
   buzzer.play(">g32>>c32");
 
+  // To bypass the menu, replace this function with
+  // selectHyper(), selectStandard(), or selectTurtle().
+  selectEdition();
+
   // Wait for button B to be pressed and released.
   lcd.clear();
   lcd.print(F("Press B"));
   lcd.gotoXY(0, 1);
   lcd.print(F("to calib"));
-  buttonB.waitForButton();
+  while(!buttonB.getSingleDebouncedPress());
 
   calibrateSensors();
 
@@ -137,7 +202,7 @@ void loop()
     // to do a sharp turn to the left.  Note that the maximum
     // value of either motor speed is 400, so we are driving
     // it at just about 25% of the max.
-    motors.setSpeeds(0, 100);
+    motors.setSpeeds(0, maxSpeed);
 
     // Just for fun, indicate the direction we are turning on
     // the LEDs.
@@ -148,14 +213,14 @@ void loop()
   {
     // We are somewhat close to being centered on the line:
     // drive straight.
-    motors.setSpeeds(100, 100);
+    motors.setSpeeds(maxSpeed, maxSpeed);
     ledYellow(1);
     ledRed(1);
   }
   else
   {
     // We are far to the left of the line: turn right.
-    motors.setSpeeds(100, 0);
+    motors.setSpeeds(maxSpeed, 0);
     ledYellow(0);
     ledRed(1);
   }
