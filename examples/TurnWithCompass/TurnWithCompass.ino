@@ -1,9 +1,8 @@
-/* This example uses the  Shield's onboard magnetometer to help
- * the  make precise 90-degree turns and drive in squares. It uses
- * Motors, Pushbutton, and IMU.
+/* This example uses the 3pi+ 32U4 robot's onboard magnetometer to
+ * help the make precise 90-degree turns and drive in squares.
  *
  * This program first calibrates the compass to account for offsets in
- *  its output. Calibration is accomplished in setup().
+ * its output. Calibration is accomplished in setup().
  *
  * In loop(), The driving angle then changes its offset by 90 degrees
  * from the heading every second. Essentially, this navigates the
@@ -13,24 +12,24 @@
  * current (including from the robot's own motors) and the environment
  * (for example, steel rebar in a concrete floor) might adversely
  * affect readings from the compass and make them less reliable.
+ *
+ * Note that the Hyper Edition does not drive very straight at the low
+ * speeds used in this example, so it might not make a very accurate
+ * square.
  */
 
-#include <Wire.h>
 #include <Pololu3piPlus32U4.h>
+#include <PololuMenu.h>
 
 /* The IMU is not fully enabled by default since it depends on the
 Wire library, which uses about 1400 bytes of additional code space
 and defines an interrupt service routine (ISR) that might be
 incompatible with some applications (such as our TWISlave example).
 
-Include IMU.h in one of your cpp/ino files to enable IMU
+Include Pololu3piPlus32U4IMU.h in one of your cpp/ino files to enable IMU
 functionality.
 */
 #include <Pololu3piPlus32U4IMU.h>
-
-#define SPEED_STRAIGHT 100 // Maximum motor speed when going straight; variable speed when turning
-#define TURN_BASE_SPEED 50 // Base speed when turning (added to variable speed)
-
 
 #define CALIBRATION_SAMPLES 70  // Number of compass readings to take when calibrating
 
@@ -40,11 +39,76 @@ functionality.
 using namespace Pololu3piPlus32U4;
 
 Motors motors;
+Buzzer buzzer;
 ButtonA buttonA;
+ButtonB buttonB;
+ButtonC buttonC;
+LCD lcd;
 IMU imu;
 
 IMU::vector<int16_t> m_max; // maximum magnetometer values, used for calibration
 IMU::vector<int16_t> m_min; // minimum magnetometer values, used for calibration
+
+/* Configuration for specific 3pi+ editions: the Standard, Turtle, and
+Hyper versions of 3pi+ have different motor configurations, requiring
+the demo to be configured with different parameters for proper
+operation.  The following functions set up these parameters using a
+menu that runs at the beginning of the program.  To bypass the menu,
+you can replace the call to selectEdition() in setup() with one of the
+specific functions.
+*/
+
+uint16_t speedStraight; // Maximum motor speed when going straight; variable speed when turning
+uint16_t turnBaseSpeed; // Base speed when turning (added to variable speed)
+
+void selectHyper()
+{
+  motors.flipLeftMotor(true);
+  motors.flipRightMotor(true);
+  // Encoders are not used in this example.
+  // encoders.flipEncoders(true);
+  speedStraight = 70;
+  turnBaseSpeed = 35;
+}
+
+void selectStandard()
+{
+  speedStraight = 100;
+  turnBaseSpeed = 50;
+}
+
+void selectTurtle()
+{
+  speedStraight = 200;
+  turnBaseSpeed = 100;
+}
+
+PololuMenu menu;
+
+void selectEdition()
+{
+  lcd.clear();
+  lcd.print(F("Select"));
+  lcd.gotoXY(0,1);
+  lcd.print(F("edition"));
+  delay(1000);
+
+  static const PololuMenu::Item items[] = {
+    { F("Hyper"), selectHyper },
+    { F("Standard"), selectStandard },
+    { F("Turtle"), selectTurtle },
+  };
+
+  menu.setItems(items, 3);
+  menu.setLcd(lcd);
+  menu.setBuzzer(buzzer);
+  menu.setButtons(buttonA, buttonB, buttonC);
+
+  while(!menu.select());
+
+  lcd.gotoXY(0,1);
+  lcd.print("OK!  ...");
+}
 
 // Setup will calibrate our compass by finding maximum/minimum magnetic readings
 void setup()
@@ -67,15 +131,23 @@ void setup()
 
   imu.configureForCompassHeading();
 
-  buttonA.waitForButton();
+  // To bypass the menu, replace this function with
+  // selectHyper(), selectStandard(), or selectTurtle().
+  selectEdition();
 
+  delay(1000);
+
+  lcd.clear();
+  lcd.print("starting");
+  lcd.gotoXY(0,1);
+  lcd.print("calib");
   Serial.println("starting calibration");
 
   // To calibrate the magnetometer, the 3pi+ spins to find the max/min
   // magnetic vectors. This information is used to correct for offsets
   // in the magnetometer data.
-  motors.setLeftSpeed(SPEED_STRAIGHT);
-  motors.setRightSpeed(-SPEED_STRAIGHT);
+  motors.setLeftSpeed(speedStraight);
+  motors.setRightSpeed(-speedStraight);
 
   for(index = 0; index < CALIBRATION_SAMPLES; index ++)
   {
@@ -115,6 +187,8 @@ void setup()
   m_min.x = running_min.x;
   m_min.y = running_min.y;
 
+  lcd.clear();
+  lcd.print("Press A");
   buttonA.waitForButton();
 }
 
@@ -140,7 +214,7 @@ void loop()
   // If the 3pi+ has turned to the direction it wants to be pointing, go straight and then do another turn
   if(abs(relative_heading) < DEVIATION_THRESHOLD)
   {
-    motors.setSpeeds(SPEED_STRAIGHT, SPEED_STRAIGHT);
+    motors.setSpeeds(speedStraight, speedStraight);
 
     Serial.print("   Straight");
 
@@ -165,12 +239,12 @@ void loop()
     // minimum base amount plus an additional variable amount based
     // on the heading difference.
 
-    speed = SPEED_STRAIGHT*relative_heading/180;
+    speed = speedStraight*relative_heading/180;
 
     if (speed < 0)
-      speed -= TURN_BASE_SPEED;
+      speed -= turnBaseSpeed;
     else
-      speed += TURN_BASE_SPEED;
+      speed += turnBaseSpeed;
 
     motors.setSpeeds(speed, -speed);
 
