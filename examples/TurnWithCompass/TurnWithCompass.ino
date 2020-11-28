@@ -94,9 +94,9 @@ void selectEdition()
   delay(1000);
 
   static const PololuMenu::Item items[] = {
-    { F("Hyper"), selectHyper },
     { F("Standard"), selectStandard },
     { F("Turtle"), selectTurtle },
+    { F("Hyper"), selectHyper },
   };
 
   menu.setItems(items, 3);
