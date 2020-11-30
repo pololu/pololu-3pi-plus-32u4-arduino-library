@@ -2,10 +2,6 @@
 when it is being rotated, and use the motors to resist that
 rotation.
 
-This code was tested on a 3pi+ with 4 NiMH batteries and two 75:1
-HP micro metal gearmotors.  If you have different batteries or
-motors, you might need to adjust the PID constants.
-
 Be careful to not move the robot for a few seconds after starting
 it while the gyro is being calibrated.  During the gyro
 calibration, the yellow LED is on and the words "Gyro cal" are

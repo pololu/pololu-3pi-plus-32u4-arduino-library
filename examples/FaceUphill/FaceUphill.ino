@@ -10,11 +10,6 @@ readings are affected by the movement of the 3pi+, so if you
 change the code for controlling the motors, you might also affect
 the accelerometer readings.
 
-This code was tested on a 3pi+ with 4 NiMH batteries and two 75:1
-HP micro metal gearmotors.  If you have different batteries or
-motors, you might need to adjust the formula for computing
-turnSpeed.
-
 Also, if the robot is pointing directly downhill, it might not
 move, because the y component of the acceleration would be close
 to 0. */
