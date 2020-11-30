@@ -1,186 +1,104 @@
+Pololu3piPlus32U4	KEYWORD1
 
-FastGPIO	KEYWORD1
-Pin	KEYWORD1
+##############################################
 
-setOutputLow	KEYWORD2
-setOutputHigh	KEYWORD2
-setOutputToggle	KEYWORD2
-setOutput	KEYWORD2
-setOutputValueLow	KEYWORD2
-setOutputValueHigh	KEYWORD2
-setOutputValueToggle	KEYWORD2
-setOutputValue	KEYWORD2
-setInput	KEYWORD2
-setInputPulledUp	KEYWORD2
-isInputHigh	KEYWORD2
-isOutput	KEYWORD2
-isOutputValueHigh	KEYWORD2
-getState	KEYWORD2
-setState	KEYWORD2
+BumpSensors	KEYWORD1
 
-PinLoan	KEYWORD1
+readRaw	KEYWORD2
+calibrate	KEYWORD2
+read	KEYWORD2
+ledRed	KEYWORD2
+ledYellow	KEYWORD2
+ledGreen	KEYWORD2
+usbPowerPresent	KEYWORD2
+readBatteryMillivolts	KEYWORD2
 
-IO_B0	LITERAL1
-IO_B1	LITERAL1
-IO_B2	LITERAL1
-IO_B3	LITERAL1
-IO_B4	LITERAL1
-IO_B5	LITERAL1
-IO_B6	LITERAL1
-IO_B7	LITERAL1
-IO_C0	LITERAL1
-IO_C1	LITERAL1
-IO_C2	LITERAL1
-IO_C3	LITERAL1
-IO_C4	LITERAL1
-IO_C5	LITERAL1
-IO_C6	LITERAL1
-IO_C7	LITERAL1
-IO_D0	LITERAL1
-IO_D1	LITERAL1
-IO_D2	LITERAL1
-IO_D3	LITERAL1
-IO_D4	LITERAL1
-IO_D5	LITERAL1
-IO_D6	LITERAL1
-IO_D7	LITERAL1
-IO_E0	LITERAL1
-IO_E2	LITERAL1
-IO_E6	LITERAL1
-IO_F0	LITERAL1
-IO_F1	LITERAL1
-IO_F4	LITERAL1
-IO_F5	LITERAL1
-IO_F6	LITERAL1
-IO_F7	LITERAL1
-IO_NONE	LITERAL1
+BumpSide	KEYWORD1
 
-USBPause	KEYWORD1
-Pushbutton	KEYWORD1
+BumpLeft	LITERAL1
+BumpRight	LITERAL1
 
-waitForPress	KEYWORD2
-waitForRelease	KEYWORD2
-waitForButton	KEYWORD2
+##############################################
+
+ButtonA	KEYWORD1
+ButtonB	KEYWORD1
+ButtonC	KEYWORD1
+
 isPressed	KEYWORD2
-getSingleDebouncedPress	KEYWORD2
-getSingleDebouncedRelease	KEYWORD2
 
-PushbuttonBase	KEYWORD1
+##############################################
 
-PushbuttonStateMachine	KEYWORD1
+Buzzer	KEYWORD1
 
-getSingleDebouncedRisingEdge	KEYWORD2
+##############################################
 
-ZUMO_BUTTON	LITERAL1
-PULL_UP_DISABLED	LITERAL1
-PULL_UP_ENABLED	LITERAL1
-DEFAULT_STATE_LOW	LITERAL1
-DEFAULT_STATE_HIGH	LITERAL1
+Encoders	KEYWORD1
+init	KEYWORD2
+getCountsLeft	KEYWORD2
+getCountsRight	KEYWORD2
+getCountsAndResetLeft	KEYWORD2
+getCountsAndResetRight	KEYWORD2
+checkErrorLeft	KEYWORD2
+checkErrorRight	KEYWORD2
 
-PololuBuzzer	KEYWORD1
+##############################################
 
-playFrequency	KEYWORD2
-playNote	KEYWORD2
-play	KEYWORD2
-playFromProgramSpace	KEYWORD2
-isPlaying	KEYWORD2
-stopPlaying	KEYWORD2
-playMode	KEYWORD2
-playCheck	KEYWORD2
+IMU	KEYWORD1
+IMUType	KEYWORD1
 
-PLAY_AUTOMATIC	LITERAL1
-PLAY_CHECK	LITERAL1
-NOTE_C	LITERAL1
-NOTE_C_SHARP	LITERAL1
-NOTE_D_FLAT	LITERAL1
-NOTE_D	LITERAL1
-NOTE_D_SHARP	LITERAL1
-NOTE_E_FLAT	LITERAL1
-NOTE_E	LITERAL1
-NOTE_F	LITERAL1
-NOTE_F_SHARP	LITERAL1
-NOTE_G_FLAT	LITERAL1
-NOTE_G	LITERAL1
-NOTE_G_SHARP	LITERAL1
-NOTE_A_FLAT	LITERAL1
-NOTE_A	LITERAL1
-NOTE_A_SHARP	LITERAL1
-NOTE_B_FLAT	LITERAL1
-NOTE_B	LITERAL1
-SILENT_NOTE	LITERAL1
-DIV_BY_10	LITERAL1
-PololuHD44780Base	KEYWORD1
+LSM6DS33_ADDR	LITERAL1
+LIS3MDL_ADDR	LITERAL1
+LSM6DS33_REG_WHO_AM_I	LITERAL1
+LSM6DS33_REG_CTRL1_XL	LITERAL1
+LSM6DS33_REG_CTRL2_G	LITERAL1
+LSM6DS33_REG_CTRL3_C	LITERAL1
+LSM6DS33_REG_STATUS_REG	LITERAL1
+LSM6DS33_REG_OUTX_L_G	LITERAL1
+LSM6DS33_REG_OUTX_L_XL	LITERAL1
+LIS3MDL_REG_WHO_AM_I	LITERAL1
+LIS3MDL_REG_CTRL_REG1	LITERAL1
+LIS3MDL_REG_CTRL_REG2	LITERAL1
+LIS3MDL_REG_CTRL_REG3	LITERAL1
+LIS3MDL_REG_CTRL_REG4	LITERAL1
+LIS3MDL_REG_STATUS_REG	LITERAL1
+LIS3MDL_REG_OUT_X_L	LITERAL1
+
+init	KEYWORD2
+getType	KEYWORD2
+enableDefault	KEYWORD2
+configureForTurnSensing	KEYWORD2
+configureForFaceUphill	KEYWORD2
+configureForCompassHeading	KEYWORD2
+writeReg	KEYWORD2
+readReg	KEYWORD2
+readAcc	KEYWORD2
+readGyro	KEYWORD2
+readMag	KEYWORD2
+read	KEYWORD2
+accDataReady	KEYWORD2
+gyroDataReady	KEYWORD2
+magDataReady	KEYWORD2
+testReg	KEYWORD2
+readAxes16Bit	KEYWORD2
+
+##############################################
+
+LCD	KEYWORD1
 
 initPins	KEYWORD2
-init	KEYWORD2
-reinitialize	KEYWORD2
 send	KEYWORD2
-clear	KEYWORD2
-loadCustomCharacter	KEYWORD2
-loadCustomCharacterFromRam	KEYWORD2
-createChar	KEYWORD2
-gotoXY	KEYWORD2
-setCursor	KEYWORD2
-noDisplay	KEYWORD2
-display	KEYWORD2
-noCursor	KEYWORD2
-cursor	KEYWORD2
-noBlink	KEYWORD2
-blink	KEYWORD2
-cursorSolid	KEYWORD2
-cursorBlinking	KEYWORD2
-scrollDisplayLeft	KEYWORD2
-scrollDisplayRight	KEYWORD2
-home	KEYWORD2
-leftToRight	KEYWORD2
-rightToleft	KEYWORD2
-autoscroll	KEYWORD2
-noAutoscroll	KEYWORD2
-command	KEYWORD2
-write	KEYWORD2
 
-PololuHD44780	KEYWORD1
-#######################################
-# Syntax Coloring Map for QTRSensors
-#######################################
+##############################################
 
-#######################################
-# Datatypes (KEYWORD1)
-#######################################
+LineSensorsReadMode	KEYWORD1
+Off	LITERAL1
+On	LITERAL1
+Manual	LITERAL1
 
-QTRSensors	KEYWORD1
-QTRReadMode	KEYWORD1
-QTRType	KEYWORD1
-QTREmitters	KEYWORD1
-CalibrationData	KEYWORD1
+LineSensors	KEYWORD1
 
-#######################################
-# Methods and Functions (KEYWORD2)
-#######################################
-
-setTypeRC	KEYWORD2
-setTypeAnalog	KEYWORD2
-getType	KEYWORD2
-setSensorPins	KEYWORD2
 setTimeout	KEYWORD2
 getTimeout	KEYWORD2
-setSamplesPerSensor	KEYWORD2
-getSamplesPerSensor	KEYWORD2
-setEmitterPin	KEYWORD2
-setEmitterPins	KEYWORD2
-releaseEmitterPins	KEYWORD2
-getEmitterPinCount	KEYWORD2
-getEmitterPin	KEYWORD2
-getOddEmitterPin	KEYWORD2
-getEvenEmitterPin	KEYWORD2
-setDimmable	KEYWORD2
-setNonDimmable	KEYWORD2
-getDimmable	KEYWORD2
-setDimmingLevel	KEYWORD2
-getDimmingLevel	KEYWORD2
-emittersOff	KEYWORD2
-emittersOn	KEYWORD2
-emittersSelect	KEYWORD2
 calibrate	KEYWORD2
 resetCalibration	KEYWORD2
 read	KEYWORD2
@@ -188,14 +106,19 @@ readCalibrated	KEYWORD2
 readLineBlack	KEYWORD2
 readLineWhite	KEYWORD2
 
-calibrationOn	KEYWORD2
-calibrationOff	KEYWORD2
+CalibrationData	KEYWORD1
 
-#######################################
-# Constants (LITERAL1)
-#######################################
+emittersOn	KEYWORD2
+emittersOff	KEYWORD2
 
-QTRNoEmitterPin	LITERAL1
-QTRRCDefaultTimeout	LITERAL1
-QTRMaxSensors	LITERAL1
+##############################################
 
+Motors	KEYWORD1
+
+flipLeftMotor	KEYWORD2
+flipRightMotor	KEYWORD2
+setLeftSpeed	KEYWORD2
+setRightSpeed	KEYWORD2
+setSpeeds	KEYWORD2
+
+##############################################
