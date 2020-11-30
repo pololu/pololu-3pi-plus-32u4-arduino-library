@@ -1,30 +1,32 @@
 Pololu3piPlus32U4	KEYWORD1
 
-##############################################
-
-BumpSensors	KEYWORD1
-
-readRaw	KEYWORD2
-calibrate	KEYWORD2
-read	KEYWORD2
 ledRed	KEYWORD2
 ledYellow	KEYWORD2
 ledGreen	KEYWORD2
 usbPowerPresent	KEYWORD2
 readBatteryMillivolts	KEYWORD2
 
+##############################################
+
 BumpSide	KEYWORD1
 
 BumpLeft	LITERAL1
 BumpRight	LITERAL1
+
+BumpSensors	KEYWORD1
+
+calibrate	KEYWORD2
+read	KEYWORD2
+leftChanged	KEYWORD2
+leftIsPressed	KEYWORD2
+rightChanged	KEYWORD2
+rightIsPressed	KEYWORD2
 
 ##############################################
 
 ButtonA	KEYWORD1
 ButtonB	KEYWORD1
 ButtonC	KEYWORD1
-
-isPressed	KEYWORD2
 
 ##############################################
 
@@ -63,6 +65,7 @@ LIS3MDL_REG_CTRL_REG4	LITERAL1
 LIS3MDL_REG_STATUS_REG	LITERAL1
 LIS3MDL_REG_OUT_X_L	LITERAL1
 
+getLastError	KEYWORD2
 init	KEYWORD2
 getType	KEYWORD2
 enableDefault	KEYWORD2
@@ -78,15 +81,10 @@ read	KEYWORD2
 accDataReady	KEYWORD2
 gyroDataReady	KEYWORD2
 magDataReady	KEYWORD2
-testReg	KEYWORD2
-readAxes16Bit	KEYWORD2
 
 ##############################################
 
 LCD	KEYWORD1
-
-initPins	KEYWORD2
-send	KEYWORD2
 
 ##############################################
 
