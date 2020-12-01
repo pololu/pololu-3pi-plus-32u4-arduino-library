@@ -38,7 +38,11 @@ char report[80];
 
 void setup()
 {
-
+  // Uncomment the following lines for the Hyper edition; its wheels
+  // spin in the opposite direction relative to the encoders.
+  // encoders.flipEncoders(true);
+  // motors.flipLeftMotor(true);
+  // motors.flipRightMotor(true);
 }
 
 void loop()
