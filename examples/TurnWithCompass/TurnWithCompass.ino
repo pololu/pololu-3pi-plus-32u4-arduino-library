@@ -58,8 +58,10 @@ you can replace the call to selectEdition() in setup() with one of the
 specific functions.
 */
 
-uint16_t speedStraight; // Maximum motor speed when going straight; variable speed when turning
+uint16_t speedStraightLeft; // Maximum motor speed when going straight; variable speed when turning
+uint16_t speedStraightRight;
 uint16_t turnBaseSpeed; // Base speed when turning (added to variable speed)
+uint16_t driveTime; // Time to drive straight, in milliseconds
 
 void selectHyper()
 {
@@ -67,20 +69,30 @@ void selectHyper()
   motors.flipRightMotor(true);
   // Encoders are not used in this example.
   // encoders.flipEncoders(true);
-  speedStraight = 70;
-  turnBaseSpeed = 35;
+
+  // The right motor tends to be a bit slower on the Hyper edition.
+  // Speed it up to drive straighter.
+  // You might need to adjust this value for your particular unit.
+  speedStraightLeft = 70;
+  speedStraightRight = 80;
+  turnBaseSpeed = 20;
+  driveTime = 500;
 }
 
 void selectStandard()
 {
-  speedStraight = 100;
-  turnBaseSpeed = 50;
+  speedStraightLeft = 100;
+  speedStraightRight = speedStraightLeft;
+  turnBaseSpeed = 20;
+  driveTime = 1000;
 }
 
 void selectTurtle()
 {
-  speedStraight = 200;
-  turnBaseSpeed = 100;
+  speedStraightLeft = 200;
+  speedStraightRight = speedStraightLeft;
+  turnBaseSpeed = 40;
+  driveTime = 2000;
 }
 
 PololuMenu menu;
@@ -146,8 +158,8 @@ void setup()
   // To calibrate the magnetometer, the 3pi+ spins to find the max/min
   // magnetic vectors. This information is used to correct for offsets
   // in the magnetometer data.
-  motors.setLeftSpeed(speedStraight);
-  motors.setRightSpeed(-speedStraight);
+  motors.setLeftSpeed(speedStraightLeft);
+  motors.setRightSpeed(-speedStraightRight);
 
   for(index = 0; index < CALIBRATION_SAMPLES; index ++)
   {
@@ -196,7 +208,7 @@ void loop()
 {
   float heading, relative_heading;
   int speed;
-  static float target_heading = averageHeading();
+  static float target_heading = 0;
 
   // Heading is given in degrees away from the magnetic vector, increasing clockwise
   heading = averageHeading();
@@ -214,23 +226,20 @@ void loop()
   // If the 3pi+ has turned to the direction it wants to be pointing, go straight and then do another turn
   if(abs(relative_heading) < DEVIATION_THRESHOLD)
   {
-    motors.setSpeeds(speedStraight, speedStraight);
+    motors.setSpeeds(speedStraightLeft, speedStraightRight);
 
     Serial.print("   Straight");
 
-    delay(1000);
+    delay(driveTime);
 
-    // Turn off motors and wait a short time to reduce interference from motors
+    // Turn off motors and wait a short time to stop smoothly.
     motors.setSpeeds(0, 0);
     delay(100);
 
-    // Turn 90 degrees relative to the direction we are pointing.
-    // This will help account for variable magnetic field, as opposed
-    // to using fixed increments of 90 degrees from the initial
-    // heading (which might have been measured in a different magnetic
-    // field than the one the 3pi+ is experiencing now).
-    // Note: fmod() is floating point modulo
-    target_heading = fmod(averageHeading() + 90, 360);
+    // Turn 90 degrees.
+    target_heading = target_heading + 90;
+    if(target_heading >= 360)
+      target_heading -= 360;
   }
   else
   {
@@ -239,7 +248,7 @@ void loop()
     // minimum base amount plus an additional variable amount based
     // on the heading difference.
 
-    speed = speedStraight*relative_heading/180;
+    speed = speedStraightLeft*relative_heading/180;
 
     if (speed < 0)
       speed -= turnBaseSpeed;
