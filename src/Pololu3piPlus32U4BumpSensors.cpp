@@ -1,3 +1,5 @@
+// Copyright (C) Pololu Corporation.  See www.pololu.com for details.
+
 #include <Pololu3piPlus32U4BumpSensors.h>
 #include <FastGPIO.h>
 

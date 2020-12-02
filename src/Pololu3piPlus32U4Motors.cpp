@@ -1,4 +1,4 @@
-// Copyright Pololu Corporation.  For more information, see http://www.pololu.com/
+// Copyright (C) Pololu Corporation.  See www.pololu.com for details.
 
 #include <Pololu3piPlus32U4Motors.h>
 #include <FastGPIO.h>

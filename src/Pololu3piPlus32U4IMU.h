@@ -1,11 +1,15 @@
-/* Include this file in one of your cpp/ino files for IMU
-functionality.
+// Copyright (C) Pololu Corporation.  See www.pololu.com for details.
 
-The IMU is not fully enabled by default since it depends on the
-Wire library, which uses about 1400 bytes of additional code space
-and defines an interrupt service routine (ISR) that might be
-incompatible with some applications (such as our TWISlave example).
-*/
+/// \file Pololu3piPlus32U4IMU.h
+///
+/// \brief Include this file in one of your cpp/ino files for IMU
+/// functionality.
+///
+/// The IMU is not fully enabled by default since it depends on the
+/// Wire library, which uses about 1400 bytes of additional code space
+/// and defines an interrupt service routine (ISR) that might be
+/// incompatible with some applications (such as our TWISlave example).
+
 #pragma once
 #include <Wire.h>
 #include <Pololu3piPlus32U4IMU_declaration.h>

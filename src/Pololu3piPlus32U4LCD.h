@@ -1,6 +1,6 @@
-// Copyright Pololu Corporation.  For more information, see http://www.pololu.com/
+// Copyright (C) Pololu Corporation.  See www.pololu.com for details.
 
-/*! \file LCD.h */
+/// \file Pololu3piPlus32U4LCD.h
 
 #pragma once
 
@@ -11,28 +11,27 @@
 namespace Pololu3piPlus32U4
 {
 
-/*! \brief Writes data to the LCD on the 3pi+ 32U4.
- *
- * This library is similar to the Arduino
- * [LiquidCrystal library](http://arduino.cc/en/Reference/LiquidCrystal),
- * but it has some extra features needed on the 3pi+ 32U4:
- *
- * * This class disables USB interrupts temporarily while writing to the LCD so
- *   that the USB interrupts will not change the RXLED and TXLED pins, which
- *   double as LCD data lines.
- * * This class restores the RS, DB4, DB5, DB6, and DB7 pins to their previous
- *   states when it is done using them so that those pins can also be used for
- *   other purposes such as controlling LEDs.
- *
- * This class inherits from the Arduino Print class, so you can call the
- * `print()` function on it with a variety of arguments.  See the
- * [Arduino print() documentation](http://arduino.cc/en/Serial/Print)
- * for more information.
- *
- * For detailed information about HD44780 LCD interface, including what
- * characters can be displayed, see the
- * [HD44780 datasheet](http://www.pololu.com/file/0J72/HD44780.pdf).
- */
+/// \brief Writes data to the LCD on the 3pi+ 32U4.
+///
+/// This library is similar to the Arduino
+/// [LiquidCrystal library](http://arduino.cc/en/Reference/LiquidCrystal),
+/// but it has some extra features needed on the 3pi+ 32U4:
+///
+/// * This class disables USB interrupts temporarily while writing to the LCD so
+///   that the USB interrupts will not change the RXLED and TXLED pins, which
+///   double as LCD data lines.
+/// * This class restores the RS, DB4, DB5, DB6, and DB7 pins to their previous
+///   states when it is done using them so that those pins can also be used for
+///   other purposes such as controlling LEDs.
+///
+/// This class inherits from the Arduino Print class, so you can call the
+/// `print()` function on it with a variety of arguments.  See the
+/// [Arduino print() documentation](http://arduino.cc/en/Serial/Print)
+/// for more information.
+///
+/// For detailed information about HD44780 LCD interface, including what
+/// characters can be displayed, see the
+/// [HD44780 datasheet](http://www.pololu.com/file/0J72/HD44780.pdf).
 class LCD : public PololuHD44780Base
 {
     // Pin assignments

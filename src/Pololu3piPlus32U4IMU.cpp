@@ -1,3 +1,5 @@
+// Copyright (C) Pololu Corporation.  See www.pololu.com for details.
+
 #include <Pololu3piPlus32U4IMU_declaration.h>
 
 #define LSM6DS33_WHO_ID 0x69

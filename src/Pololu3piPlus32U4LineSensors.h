@@ -1,4 +1,6 @@
-/** \file LineSensors.h **/
+// Copyright (C) Pololu Corporation.  See www.pololu.com for details.
+
+/// \file Pololu3piPlus32U4LineSensors.h
 
 #pragma once
 
@@ -25,17 +27,16 @@ enum class LineSensorsReadMode : uint8_t {
   Manual
 };
 
-/** \brief Gets readings from the five reflectance sensors on the bottom of
- * the 3pi+ 32U4.
- *
- * The readLineBlack() and readLineWhite() methods will always return values
- * that increase from left to right, with 0 corresponding to the leftmost sensor
- * and 4000 corresponding to the rightmost sensor.
- */
+/// \brief Gets readings from the five reflectance sensors on the bottom of the
+/// 3pi+ 32U4.
+///
+/// The readLineBlack() and readLineWhite() methods will always return values
+/// that increase from left to right, with 0 corresponding to the leftmost
+/// sensor and 4000 corresponding to the rightmost sensor.
 class LineSensors
 {
 public:
-  /// 3pi+ has 5 line sensors
+  /// The 3pi+ 32U4 has 5 line sensors.
   static const uint8_t _sensorCount = 5;
 
   /// Default timeout for RC sensors (in microseconds).
@@ -75,9 +76,9 @@ public:
 
   /// \brief Reads the sensors for calibration.
   ///
-  /// \param emitters The emitter behavior during calibration, as a member of the
-  /// ::LineSensorsReadMode enum. The default is LineSensorsReadMode::On. Manual emitter
-  /// control with LineSensorsReadMode::Manual is not supported.
+  /// \param mode The emitter behavior during calibration, as a member of
+  /// the ::LineSensorsReadMode enum. The default is LineSensorsReadMode::On.
+  /// Manual emitter control with LineSensorsReadMode::Manual is not supported.
   ///
   /// This method reads the sensors 10 times and uses the results for
   /// calibration. The sensor values are not returned; instead, the maximum
@@ -143,8 +144,8 @@ public:
   /// all five values.
   ///
   /// \param mode The emitter behavior during the read, as a member of the
-  /// ::LineSensorsReadMode enum. The default is LineSensorsReadMode::On. Manual emitter
-  /// control with LineSensorsReadMode::Manual is not supported.
+  /// ::LineSensorsReadMode enum. The default is LineSensorsReadMode::On. Manual
+  /// emitter control with LineSensorsReadMode::Manual is not supported.
   ///
   /// 0 corresponds to the minimum value stored in #calibrationOn or
   /// #calibrationOff, depending on \p mode, and 1000 corresponds to the
@@ -165,8 +166,8 @@ public:
   /// five values.
   ///
   /// \param mode The emitter behavior during the read, as a member of the
-  /// ::LineSensorsReadMode enum. The default is LineSensorsReadMode::On. Manual emitter
-  /// control with LineSensorsReadMode::Manual is not supported.
+  /// ::LineSensorsReadMode enum. The default is LineSensorsReadMode::On. Manual
+  /// emitter control with LineSensorsReadMode::Manual is not supported.
   ///
   /// \return An estimate of the position of a black line under the sensors.
   ///
@@ -213,8 +214,8 @@ public:
   /// five values.
   ///
   /// \param mode The emitter behavior during the read, as a member of the
-  /// ::LineSensorsReadMode enum. The default is LineSensorsReadMode::On. Manual emitter
-  /// control with LineSensorsReadMode::Manual is not supported.
+  /// ::LineSensorsReadMode enum. The default is LineSensorsReadMode::On. Manual
+  /// emitter control with LineSensorsReadMode::Manual is not supported.
   ///
   /// \return An estimate of the position of a white line under the sensors.
   ///

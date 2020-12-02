@@ -1,11 +1,10 @@
-// Copyright Pololu Corporation.  For more information, see http://www.pololu.com/
+// Copyright (C) Pololu Corporation.  See www.pololu.com for details.
 
-/*! \file Pololu3piPlus32U4.h
- *
- * \brief Main header file for the Pololu 3pi+ 32U4 library.
- *
- * This file includes all the other headers files provided by the library.
- */
+/// \file Pololu3piPlus32U4.h
+///
+/// \brief Main header file for the Pololu 3pi+ 32U4 library.
+///
+/// This file includes all the other headers files provided by the library.
 
 #pragma once
 
@@ -23,57 +22,58 @@
 #include <Pololu3piPlus32U4LineSensors.h>
 #include <Pololu3piPlus32U4Motors.h>
 
+/// Top-level namespace for the Pololu3piPlus32U4 library.
 namespace Pololu3piPlus32U4
 {
 
 // TODO: servo support
 
-/*! \brief Turns the red user LED (RX) on or off.
-
-@param on 1 to turn on the LED, 0 to turn it off.
-
-The red user LED is on pin 17, which is also known as PB0, SS, and RXLED.  The
-Arduino core code uses this LED to indicate when it receives data over USB, so
-it might be hard to control this LED when USB is connected. */
+/// \brief Turns the red user LED (RX) on or off.
+///
+/// \param on 1 to turn on the LED, 0 to turn it off.
+///
+/// The red user LED is on pin 17, which is also known as PB0, SS, and RXLED.
+/// The Arduino core code uses this LED to indicate when it receives data over
+/// USB, so it might be hard to control this LED when USB is connected.
 inline void ledRed(bool on)
 {
     FastGPIO::Pin<17>::setOutput(!on);
 }
 
-/*! \brief Turns the yellow user LED on pin 13 on or off.
-
-@param on 1 to turn on the LED, 0 to turn it off. */
+/// \brief Turns the yellow user LED on pin 13 on or off.
+///
+/// \param on 1 to turn on the LED, 0 to turn it off.
 inline void ledYellow(bool on)
 {
     FastGPIO::Pin<13>::setOutput(on);
 }
 
-/*! \brief Turns the green user LED (TX) on or off.
-
-@param on 1 to turn on the LED, 0 to turn it off.
-
-The green user LED is pin PD5, which is also known as TXLED.  The Arduino core
-code uses this LED to indicate when it receives data over USB, so it might be
-hard to control this LED when USB is connected. */
+/// \brief Turns the green user LED (TX) on or off.
+///
+/// \param on 1 to turn on the LED, 0 to turn it off.
+///
+/// The green user LED is pin PD5, which is also known as TXLED.  The Arduino
+/// core code uses this LED to indicate when it receives data over USB, so it
+/// might be hard to control this LED when USB is connected.
 inline void ledGreen(bool on)
 {
     FastGPIO::Pin<IO_D5>::setOutput(!on);
 }
 
-/*! \brief Returns true if USB power is detected.
-
-This function returns true if power is detected on the board's USB port and
-returns false otherwise.  It uses the ATmega32U4's VBUS line, which is directly
-connected to the power pin of the USB connector.
-
-\sa A method for detecting whether the board's virtual COM port is open:
-  http://arduino.cc/en/Serial/IfSerial */
+/// \brief Returns true if USB power is detected.
+///
+/// This function returns true if power is detected on the board's USB port and
+/// returns false otherwise.  It uses the ATmega32U4's VBUS line, which is
+/// directly connected to the power pin of the USB connector.
+///
+/// \sa A method for detecting whether the board's virtual COM port is open:
+/// http://arduino.cc/en/Serial/IfSerial
 inline bool usbPowerPresent()
 {
     return USBSTA >> VBUS & 1;
 }
 
-/*! \brief Reads the battery voltage and returns it in millivolts. */
+/// Reads the battery voltage and returns it in millivolts.
 inline uint16_t readBatteryMillivolts()
 {
     const uint8_t sampleCount = 8;

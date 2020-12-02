@@ -50,21 +50,21 @@ Several example sketches are available that show how to use the library.  You ca
 
 The contents of the library are contained in the Pololu3piPlus32U4 namespace. The main classes and functions provided by the library are listed below:
 
-* ButtonA
-* ButtonB
-* ButtonC
-* Buzzer
-* Encoders
-* LCD
-* Motors
-* LineSensors
-* BumpSensors
-* IMU
-* ledRed()
-* ledGreen()
-* ledYellow()
-* usbPowerPresent()
-* readBatteryMillivolts()
+* Pololu3piPlus32U4::ButtonA
+* Pololu3piPlus32U4::ButtonB
+* Pololu3piPlus32U4::ButtonC
+* Pololu3piPlus32U4::Buzzer
+* Pololu3piPlus32U4::Encoders
+* Pololu3piPlus32U4::LCD
+* Pololu3piPlus32U4::Motors
+* Pololu3piPlus32U4::LineSensors
+* Pololu3piPlus32U4::BumpSensors
+* Pololu3piPlus32U4::IMU
+* Pololu3piPlus32U4::ledRed()
+* Pololu3piPlus32U4::ledGreen()
+* Pololu3piPlus32U4::ledYellow()
+* Pololu3piPlus32U4::usbPowerPresent()
+* Pololu3piPlus32U4::readBatteryMillivolts()
 
 ## Dependencies
 

@@ -1,6 +1,6 @@
-// Copyright Pololu Corporation.  For more information, see http://www.pololu.com/
+// Copyright (C) Pololu Corporation.  See www.pololu.com for details.
 
-/*! \file Pololu3piPlus32U4Buzzer.h */
+/// \file Pololu3piPlus32U4Buzzer.h
 
 #pragma once
 
@@ -9,20 +9,19 @@
 namespace Pololu3piPlus32U4
 {
 
-/*! \brief Plays beeps and music on the buzzer on the 3pi+ 32U4.
- *
- * This class uses Timer 4 and pin 6 (PD7/OC4D) to play beeps and melodies on
- * the 3pi+ 32U4 buzzer.
- *
- * Note durations are timed using a timer overflow interrupt
- * (`TIMER4_OVF`), which will briefly interrupt execution of your
- * main program at the frequency of the sound being played. In most cases, the
- * interrupt-handling routine is very short (several microseconds). However,
- * when playing a sequence of notes in `PLAY_AUTOMATIC` mode (the default mode)
- * with the `play()` command, this interrupt takes much longer than normal
- * (perhaps several hundred microseconds) every time it starts a new note. It is
- * important to take this into account when writing timing-critical code.
- */
+/// \brief Plays beeps and music on the buzzer on the 3pi+ 32U4.
+///
+/// This class uses Timer 4 and pin 6 (PD7/OC4D) to play beeps and melodies on
+/// the 3pi+ 32U4 buzzer.
+///
+/// Note durations are timed using a timer overflow interrupt (`TIMER4_OVF`),
+/// which will briefly interrupt execution of your main program at the frequency
+/// of the sound being played. In most cases, the interrupt-handling routine is
+/// very short (several microseconds). However, when playing a sequence of notes
+/// in `PLAY_AUTOMATIC` mode (the default mode) with the `play()` command, this
+/// interrupt takes much longer than normal (perhaps several hundred
+/// microseconds) every time it starts a new note. It is important to take this
+/// into account when writing timing-critical code.
 class Buzzer : public PololuBuzzer
 {
     // This is a trivial subclass of PololuBuzzer; it exists because we wanted
