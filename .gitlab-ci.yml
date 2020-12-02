@@ -8,9 +8,8 @@ ci:
   tags:
     - nix
   variables:
-    ARDUINO_CI_ONLY_CORES: arduino:avr
     ARDUINO_CI_ONLY_BOARDS: arduino:avr:leonardo
     ARDUINO_CI_LIBRARY_ARCHIVES: PololuMenu=https://github.com/pololu/pololu-menu-arduino/archive/1.0.0.tar.gz=0a1lg5pbylcrl1fc69237z6acwr8cgpbdx8bl8jx3lz4vkvjx6yr
   script:
-    - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/dev/arduino-ci.git
-    - arduino-ci/ci.rb
+    - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/dev/arduino-ci.git ci
+    - ci/ci
