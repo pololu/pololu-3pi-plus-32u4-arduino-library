@@ -52,7 +52,7 @@ This library also references several other Arduino libraries which are used to h
 * [USBPause](https://github.com/pololu/usb-pause-arduino)
 
 
-You can use these libraries in your sketch automatically without any extra installation steps and without needing to add any extra `#include` lines to your sketch. The only `#include` line needed to access all features of this library are:
+You can use these libraries in your sketch automatically without any extra installation steps and without needing to add any extra `#include` lines to your sketch. The only `#include` line needed to access all features of this library is:
 
 ~~~{.cpp}
 #include <Pololu3piPlus32U4.h>
