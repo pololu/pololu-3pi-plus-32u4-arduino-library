@@ -16,6 +16,36 @@ The 3pi+ 32U4 robot is a complete, high-performance mobile platform based on the
 
 Follow the installation instructions in the latest release at https://github.com/pololu/pololu-3pi-plus-32u4-arduino-library/releases/.
 
+## Usage
+
+To access most of features of this library, you just need a single include statement.  For convenience, we recommend using the Pololu3piPlus32U4 namespace and declaring all of the objects you want to use as global variables, as shown below:
+
+```cpp
+#include <Pololu3piPlus32U4.h>
+
+using namespace Pololu3piPlus32U4;
+
+LCD lcd;
+Buzzer buzzer;
+ButtonA buttonA;
+ButtonB buttonB;
+ButtonC buttonC;
+LineSensors lineSensors;
+BumpSensors bumpSensors;
+Motors motors;
+Encoders encoders;
+```
+
+The IMU is not fully enabled by default since it depends on the Wire library, which uses about 1400 bytes of additional code space and defines an interrupt service routine (ISR) that might be incompatible with some applications.
+
+Include Pololu3piPlus32U4IMU.h in one of your cpp/ino files to enable IMU functionality:
+
+```cpp
+#include <Pololu3piPlus32U4IMU.h>
+
+IMU imu;
+```
+
 ## Examples
 
 Several example sketches are available that show how to use the library.  You can access them from the Arduino IDE by opening the "File" menu, selecting "Examples", and then selecting "Pololu3piPlus32U4".  If you cannot find these examples, the library was probably installed incorrectly and you should retry the installation instructions above.
@@ -50,13 +80,6 @@ This library also references several other Arduino libraries which are used to h
 * [PololuMenu](https://github.com/pololu/pololu-menu-arduino)
 * [Pushbutton](https://github.com/pololu/pushbutton-arduino)
 * [USBPause](https://github.com/pololu/usb-pause-arduino)
-
-
-You can use these libraries in your sketch automatically without any extra installation steps and without needing to add any extra `#include` lines to your sketch. The only `#include` line needed to access all features of this library is:
-
-~~~{.cpp}
-#include <Pololu3piPlus32U4.h>
-~~~
 
 ## Version history
 
