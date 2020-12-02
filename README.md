@@ -6,9 +6,11 @@ Release date: 2020-12-01<br/>
 
 ## Summary
 
-This is a C++ library for the Arduino IDE that helps access the on-board hardware of the [3pi+ 32U4 Robot](https://www.pololu.com/category/280/3pi-32u4-robot).
+<img align="right" src="https://a.pololu-files.com/picture/0J11029.240w.jpg?6587c7507cb885bf3d4cdab208e39ddf">
 
-The 3pi+ 32U4 robot consists of the 3pi+ chassis, the 3pi+ 32U4 Control Board.  It has an integrated AVR ATmega32U4 microcontroller, motor drivers, encoders, buzzer, buttons, line sensors, front bump sensors, an LSM6DS33 accelerometer and gyro, and an LIS3MDL compass. See the [3pi+ 32U4 user's guide](https://www.pololu.com/docs/0J83) for more information.
+This is a C++ library for the Arduino IDE that helps access the on-board hardware of the [Pololu 3pi+ 32U4 Robot](https://www.pololu.com/category/280/3pi-32u4-robot).
+
+The 3pi+ 32U4 robot is a complete, high-performance mobile platform based on the ATmega32U4 microcontroller.  It has integrated motor drivers, encoders, buzzer, buttons, line sensors, front bump sensors, an LSM6DS33 accelerometer and gyro, and an LIS3MDL compass. See the [3pi+ 32U4 user's guide](https://www.pololu.com/docs/0J83) for more information.
 
 ## Installing the library
 
