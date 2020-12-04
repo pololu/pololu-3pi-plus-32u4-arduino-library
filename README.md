@@ -10,7 +10,13 @@ The 3pi+ 32U4 robot is a complete, high-performance mobile platform based on the
 
 ## Installing the library
 
-Follow the installation instructions in the latest release at https://github.com/pololu/pololu-3pi-plus-32u4-arduino-library/releases/.
+Use the Library Manager in version 1.8.10 or later of the Arduino software (IDE) to install this library:
+
+1. In the Arduino IDE, open the "Tools" menu and select "Manage Libraries...".
+2. Search for "3pi+".
+3. Click the Pololu3piPlus32U4 entry in the list.
+4. Click "Install".
+5. If you see a prompt asking to install missing dependencies, click "Install all".
 
 ## Usage
 
