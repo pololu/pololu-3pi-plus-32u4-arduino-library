@@ -1,9 +1,5 @@
 # Pololu3piPlus32U4 library
 
-Version: 1.0.0<br/>
-Release date: 2020-12-01<br/>
-[www.pololu.com](https://www.pololu.com/)
-
 ## Summary
 
 <img align="right" src="https://a.pololu-files.com/picture/0J11029.240w.jpg?6587c7507cb885bf3d4cdab208e39ddf">
@@ -83,6 +79,7 @@ This library also references several other Arduino libraries which are used to h
 
 ## Version history
 
+* 1.0.1 (2020-12-03): Moved code into `src/` folder; continuous integration; fixed some warnings; added missing library dependence on PololuMenu.
 * 1.0.0 (2020-12-01): Customized example sketches for different 3pi+ editions. Reimplemented menus using the PololuMenu class. Added flipEncoders() method to the Encoders class to work better with the Hyper edition robot.
 * 0.2.0 (2020-11-25): Initial public release; motor demos only support Standard Edition.
 * 0.1.0 (2020-11-25): Initial release for production.
