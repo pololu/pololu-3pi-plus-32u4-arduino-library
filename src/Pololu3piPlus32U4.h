@@ -30,7 +30,7 @@ namespace Pololu3piPlus32U4
 
 /// \brief Turns the red user LED (RX) on or off.
 ///
-/// \param on 1 to turn on the LED, 0 to turn it off.
+/// \param on A value of 1 turns on the LED; 0 turns it off.
 ///
 /// The red user LED is on pin 17, which is also known as PB0, SS, and RXLED.
 /// The Arduino core code uses this LED to indicate when it receives data over
@@ -42,7 +42,7 @@ inline void ledRed(bool on)
 
 /// \brief Turns the yellow user LED on pin 13 on or off.
 ///
-/// \param on 1 to turn on the LED, 0 to turn it off.
+/// \param on A value of 1 turns on the LED; 0 turns it off.
 inline void ledYellow(bool on)
 {
     FastGPIO::Pin<13>::setOutput(on);
@@ -50,7 +50,7 @@ inline void ledYellow(bool on)
 
 /// \brief Turns the green user LED (TX) on or off.
 ///
-/// \param on 1 to turn on the LED, 0 to turn it off.
+/// \param on A value of 1 turns on the LED; 0 turns it off.
 ///
 /// The green user LED is pin PD5, which is also known as TXLED.  The Arduino
 /// core code uses this LED to indicate when it receives data over USB, so it

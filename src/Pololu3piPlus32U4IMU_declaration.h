@@ -116,7 +116,7 @@ public:
   ///
   /// \param addr Device address.
   /// \param reg Register address.
-  /// \param value 8-bit register value to be written.
+  /// \param value The 8-bit register value to be written.
   void writeReg(uint8_t addr, uint8_t reg, uint8_t value);
 
   /// \brief Reads an 8-bit sensor register.
@@ -124,7 +124,7 @@ public:
   /// \param addr Device address.
   /// \param reg Register address.
   ///
-  /// \return 8-bit register value read from the device.
+  /// \return The 8-bit register value read from the device.
   uint8_t readReg(uint8_t addr, uint8_t reg);
 
   /// \brief Takes a reading from the accelerometer and makes the measurements
