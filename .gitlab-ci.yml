@@ -7,8 +7,6 @@ ci:
   stage: ci
   tags:
     - nix
-  variables:
-    ARDUINO_CI_ONLY_BOARDS: arduino:avr:leonardo
   script:
     - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/dev/arduino-ci.git ci
     - ci/ci

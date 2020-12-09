@@ -22,5 +22,3 @@ jobs:
     - name: Install nix
       uses: cachix/install-nix-action@v12
     - run: ci/ci
-      env:
-        ARDUINO_CI_ONLY_BOARDS: arduino:avr:leonardo
