@@ -8,5 +8,4 @@ ci:
   tags:
     - nix
   script:
-    - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/dev/arduino-ci.git ci
-    - ci/ci
+    - nix-shell -I nixpkgs=channel:nixpkgs-unstable -p arduino-ci --run "arduino-ci"
