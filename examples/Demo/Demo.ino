@@ -324,7 +324,7 @@ void selfTest()
   int right = encoders.getCountsAndResetRight();
   lcd.clear();
   if(gyroReading > -7000 && gyroReading < -5000 &&
-    left > 225 && left < 275 && right > -275 && right < -225)
+    left > 212 && left < 288 && right > -288 && right < -212)
   {
     lcd.print(F("Standrd?"));
   }
