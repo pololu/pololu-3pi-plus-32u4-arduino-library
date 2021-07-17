@@ -27,7 +27,7 @@ To access most of features of this library, you just need a single include state
 
 using namespace Pololu3piPlus32U4;
 
-OLED oled;
+OLED display;
 Buzzer buzzer;
 ButtonA buttonA;
 ButtonB buttonB;

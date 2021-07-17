@@ -3,14 +3,18 @@
 using namespace Pololu3piPlus32U4;
 BumpSensors bumpSensors;
 Buzzer buzzer;
-LCD lcd;
+
+// Change next line to this if you are using the older 3pi+
+// with a black and green LCD display:
+//LCD display;
+OLED display;
 
 void setup()
 {
   bumpSensors.calibrate();
-  lcd.clear();
-  lcd.gotoXY(0, 1);
-  lcd.print("Bump me!");
+  display.clear();
+  display.gotoXY(0, 1);
+  display.print("Bump me!");
 }
 
 void loop()
@@ -24,15 +28,15 @@ void loop()
     {
       // Left bump sensor was just pressed.
       buzzer.play("a32");
-      lcd.gotoXY(0, 0);
-      lcd.print('L');
+      display.gotoXY(0, 0);
+      display.print('L');
     }
     else
     {
       // Left bump sensor was just released.
       buzzer.play("b32");
-      lcd.gotoXY(0, 0);
-      lcd.print(' ');
+      display.gotoXY(0, 0);
+      display.print(' ');
     }
   }
 
@@ -43,15 +47,15 @@ void loop()
     {
       // Right bump sensor was just pressed.
       buzzer.play("e32");
-      lcd.gotoXY(7, 0);
-      lcd.print('R');
+      display.gotoXY(7, 0);
+      display.print('R');
     }
     else
     {
       // Right bump sensor was just released.
       buzzer.play("f32");
-      lcd.gotoXY(7, 0);
-      lcd.print(' ');
+      display.gotoXY(7, 0);
+      display.print(' ');
     }
   }
 }
