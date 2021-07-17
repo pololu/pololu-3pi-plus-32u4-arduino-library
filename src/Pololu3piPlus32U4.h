@@ -21,6 +21,7 @@
 #include <Pololu3piPlus32U4LCD.h>
 #include <Pololu3piPlus32U4LineSensors.h>
 #include <Pololu3piPlus32U4Motors.h>
+#include <Pololu3piPlus32U4OLED.h>
 
 /// Top-level namespace for the Pololu3piPlus32U4 library.
 namespace Pololu3piPlus32U4
