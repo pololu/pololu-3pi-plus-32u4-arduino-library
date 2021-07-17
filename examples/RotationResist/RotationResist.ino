@@ -5,7 +5,7 @@ rotation.
 Be careful to not move the robot for a few seconds after starting
 it while the gyro is being calibrated.  During the gyro
 calibration, the yellow LED is on and the words "Gyro cal" are
-displayed on the LCD.
+displayed on the display.
 
 After the gyro calibration is done, press button A to start the
 demo.  If you try to turn the 3pi+, or put it on a surface that
@@ -29,11 +29,12 @@ enable IMU functionality.
 */
 #include <Pololu3piPlus32U4IMU.h>
 
-#include "TurnSensor.h"
-
 using namespace Pololu3piPlus32U4;
 
-LCD lcd;  // TODO: support the OLED
+// Change next line to this if you are using the older 3pi+
+// with a black and green display display:
+// display display;
+OLED display;
 
 Buzzer buzzer;
 ButtonA buttonA;
@@ -41,6 +42,8 @@ ButtonB buttonB;
 ButtonC buttonC;
 Motors motors;
 IMU imu;
+
+#include "TurnSensor.h"
 
 /* Configuration for specific 3pi+ editions: the Standard, Turtle, and
 Hyper versions of 3pi+ have different motor configurations, requiring
@@ -75,14 +78,14 @@ void selectTurtle()
   maxSpeed = 400;
 }
 
-PololuMenuMain<typeof(lcd)> menu;
+PololuMenuMain<typeof(display)> menu;
 
 void selectEdition()
 {
-  lcd.clear();
-  lcd.print(F("Select"));
-  lcd.gotoXY(0,1);
-  lcd.print(F("edition"));
+  display.clear();
+  display.print(F("Select"));
+  display.gotoXY(0,1);
+  display.print(F("edition"));
   delay(1000);
 
   static const PololuMenuItem items[] = {
@@ -92,14 +95,14 @@ void selectEdition()
   };
 
   menu.setItems(items, 3);
-  menu.setDisplay(lcd);
+  menu.setDisplay(display);
   menu.setBuzzer(buzzer);
   menu.setButtons(buttonA, buttonB, buttonC);
 
   while(!menu.select());
 
-  lcd.gotoXY(0,1);
-  lcd.print("OK!  ...");
+  display.gotoXY(0,1);
+  display.print("OK!  ...");
 }
 
 void setup()
@@ -108,13 +111,16 @@ void setup()
   // selectHyper(), selectStandard(), or selectTurtle().
   selectEdition();
 
+  // Delay before calibrating the gyro.
+  delay(1000);
+
   turnSensorSetup();
   turnSensorReset();
 
-  lcd.clear();
-  lcd.print(F("Try to"));
-  lcd.gotoXY(0, 1);
-  lcd.print(F("turn me!"));
+  display.clear();
+  display.print(F("Try to"));
+  display.gotoXY(0, 1);
+  display.print(F("turn me!"));
 }
 
 void loop()
