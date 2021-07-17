@@ -1,12 +1,17 @@
 /* This demo program shows many features of the 3pi+.
 
-It uses the buttons, LCD, and buzzer to provide a user interface.
-It presents a menu to the user that lets the user select from
+It uses the buttons, display, and buzzer to provide a user
+interface.  It presents a menu to the user that lets the user
+select from
 several different demos.
 
-To use this demo program, you will need to have the LCD connected
-to the 3pi+.  If you cannot see any text on the LCD,
-try rotating the contrast potentiometer. */
+To use this demo program, you will need to have the LCD/OLED
+display connected to the 3pi+.
+
+If you have an older 3pi+ with a black and green LCD display and
+you cannot see any text on the LCD, make sure you have modified
+the 'OLED lcd;' line below and try rotating the contrast
+potentiometer. */
 
 #include <Wire.h>
 #include <Pololu3piPlus32U4.h>
@@ -25,7 +30,11 @@ enable IMU functionality.
 
 using namespace Pololu3piPlus32U4;
 
-LCD lcd;
+// Change next line to this if you are using the older 3pi+
+// with a black and green LCD display:
+// LCD lcd;
+OLED lcd;
+
 Buzzer buzzer;
 ButtonA buttonA;
 ButtonB buttonB;
@@ -36,7 +45,7 @@ IMU imu;
 Motors motors;
 Encoders encoders;
 
-PololuMenu mainMenu;
+PololuMenuMain<typeof(lcd)> mainMenu;
 
 bool launchSelfTest = false;
 
@@ -550,6 +559,7 @@ void compassDemo()
 
   while (true)
   {
+    lcd.noAutoDisplay();
     lcd.clear();
     displayBackArrow();
     lcd.gotoXY(7,1);
@@ -618,6 +628,7 @@ void compassDemo()
       lcd.gotoXY(3,0);
       lcd.print(dir);
     }
+    lcd.display();
 
     switch (mainMenu.buttonMonitor())
     {
@@ -989,7 +1000,7 @@ void aboutDemo() {
 
 void setup()
 {
-  static const PololuMenu::Item mainMenuItems[] = {
+  static const PololuMenuItem mainMenuItems[] = {
     { F("Power"), powerDemo },
     { F("LineSens"), lineSensorDemo },
     { F("BumpSens"), bumpSensorDemo },
@@ -1004,7 +1015,7 @@ void setup()
     { F("About"), aboutDemo },
   };
   mainMenu.setItems(mainMenuItems, sizeof(mainMenuItems)/sizeof(mainMenuItems[0]));
-  mainMenu.setLcd(lcd);
+  mainMenu.setDisplay(lcd);
   mainMenu.setBuzzer(buzzer);
   mainMenu.setButtons(buttonA, buttonB, buttonC);
   mainMenu.setSecondLine(F("\x7f" "A \xa5" "B C\x7e"));

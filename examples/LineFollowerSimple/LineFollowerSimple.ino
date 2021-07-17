@@ -7,13 +7,17 @@ based algorithm. */
 
 using namespace Pololu3piPlus32U4;
 
+// Change next line to this if you are using the older 3pi+
+// with a black and green LCD display:
+// LCD lcd;
+OLED lcd;
+
 Buzzer buzzer;
 LineSensors lineSensors;
 Motors motors;
 ButtonA buttonA;
 ButtonB buttonB;
 ButtonC buttonC;
-LCD lcd;
 
 #define NUM_SENSORS 5
 unsigned int lineSensorValues[NUM_SENSORS];
@@ -56,7 +60,7 @@ void selectTurtle()
   calibrationSpeed = 120;
 }
 
-PololuMenu menu;
+PololuMenuMain<typeof(lcd)> menu;
 
 void selectEdition()
 {
@@ -66,14 +70,14 @@ void selectEdition()
   lcd.print(F("edition"));
   delay(1000);
 
-  static const PololuMenu::Item items[] = {
+  static const PololuMenuItem items[] = {
     { F("Standard"), selectStandard },
     { F("Turtle"), selectTurtle },
     { F("Hyper"), selectHyper },
   };
 
   menu.setItems(items, 3);
-  menu.setLcd(lcd);
+  menu.setDisplay(lcd);
   menu.setBuzzer(buzzer);
   menu.setButtons(buttonA, buttonB, buttonC);
 
@@ -139,9 +143,9 @@ void showReadings()
   {
     uint16_t position = lineSensors.readLineBlack(lineSensorValues);
 
-    lcd.clear();
     lcd.gotoXY(0, 0);
     lcd.print(position);
+    lcd.print("    ");
     lcd.gotoXY(0, 1);
     for (uint8_t i = 0; i < NUM_SENSORS; i++)
     {

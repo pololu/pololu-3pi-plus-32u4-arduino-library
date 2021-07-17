@@ -30,9 +30,13 @@ enable IMU functionality.
 
 using namespace Pololu3piPlus32U4;
 
+// Change next line to this if you are using the older 3pi+
+// with a black and green LCD display:
+// LCD lcd;
+OLED lcd;
+
 IMU imu;
 Motors motors;
-LCD lcd;
 Buzzer buzzer;
 ButtonA buttonA;
 ButtonB buttonB;
@@ -67,7 +71,7 @@ void selectTurtle()
   maxSpeed = 200;
 }
 
-PololuMenu menu;
+PololuMenuMain<typeof(lcd)> menu;
 
 void selectEdition()
 {
@@ -77,14 +81,14 @@ void selectEdition()
   lcd.print(F("edition"));
   delay(1000);
 
-  static const PololuMenu::Item items[] = {
+  static const PololuMenuItem items[] = {
     { F("Standard"), selectStandard },
     { F("Turtle"), selectTurtle },
     { F("Hyper"), selectHyper },
   };
 
   menu.setItems(items, 3);
-  menu.setLcd(lcd);
+  menu.setDisplay(lcd);
   menu.setBuzzer(buzzer);
   menu.setButtons(buttonA, buttonB, buttonC);
 
