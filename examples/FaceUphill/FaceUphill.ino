@@ -32,8 +32,8 @@ using namespace Pololu3piPlus32U4;
 
 // Change next line to this if you are using the older 3pi+
 // with a black and green LCD display:
-// LCD lcd;
-OLED lcd;
+// LCD display;
+OLED display;
 
 IMU imu;
 Motors motors;
@@ -71,14 +71,14 @@ void selectTurtle()
   maxSpeed = 200;
 }
 
-PololuMenuMain<typeof(lcd)> menu;
+PololuMenu<typeof(display)> menu;
 
 void selectEdition()
 {
-  lcd.clear();
-  lcd.print(F("Select"));
-  lcd.gotoXY(0,1);
-  lcd.print(F("edition"));
+  display.clear();
+  display.print(F("Select"));
+  display.gotoXY(0,1);
+  display.print(F("edition"));
   delay(1000);
 
   static const PololuMenuItem items[] = {
@@ -88,14 +88,14 @@ void selectEdition()
   };
 
   menu.setItems(items, 3);
-  menu.setDisplay(lcd);
+  menu.setDisplay(display);
   menu.setBuzzer(buzzer);
   menu.setButtons(buttonA, buttonB, buttonC);
 
   while(!menu.select());
 
-  lcd.gotoXY(0,1);
-  lcd.print("OK!  ...");
+  display.gotoXY(0,1);
+  display.print("OK!  ...");
 }
 
 void setup()
@@ -129,12 +129,12 @@ void loop()
   if ((uint8_t)(millis() - lastDisplayTime) > 150)
   {
     lastDisplayTime = millis();
-    lcd.gotoXY(0, 0);
-    lcd.print(x);
-    lcd.print(F("       "));
-    lcd.gotoXY(0, 1);
-    lcd.print(y);
-    lcd.print(F("       "));
+    display.gotoXY(0, 0);
+    display.print(x);
+    display.print(F("       "));
+    display.gotoXY(0, 1);
+    display.print(y);
+    display.print(F("       "));
   }
 
   // Use the encoders to see how much we should drive forward.

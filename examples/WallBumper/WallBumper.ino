@@ -10,8 +10,8 @@ using namespace Pololu3piPlus32U4;
 
 // Change next line to this if you are using the older 3pi+
 // with a black and green LCD display:
-// LCD lcd;
-OLED lcd;
+// LCD display;
+OLED display;
 
 BumpSensors bumpSensors;
 Buzzer buzzer;
@@ -58,14 +58,14 @@ void selectTurtle()
   turnTime = 500;
 }
 
-PololuMenuMain<typeof(lcd)> menu;
+PololuMenu<typeof(display)> menu;
 
 void selectEdition()
 {
-  lcd.clear();
-  lcd.print(F("Select"));
-  lcd.gotoXY(0,1);
-  lcd.print(F("edition"));
+  display.clear();
+  display.print(F("Select"));
+  display.gotoXY(0,1);
+  display.print(F("edition"));
   delay(1000);
 
   static const PololuMenuItem items[] = {
@@ -75,14 +75,14 @@ void selectEdition()
   };
 
   menu.setItems(items, 3);
-  menu.setDisplay(lcd);
+  menu.setDisplay(display);
   menu.setBuzzer(buzzer);
   menu.setButtons(buttonA, buttonB, buttonC);
 
   while(!menu.select());
 
-  lcd.gotoXY(0,1);
-  lcd.print("OK!  ...");
+  display.gotoXY(0,1);
+  display.print("OK!  ...");
 }
 
 void setup()
@@ -93,7 +93,7 @@ void setup()
 
   bumpSensors.calibrate();
   delay(1000);
-  lcd.clear();
+  display.clear();
 }
 
 void loop()
@@ -107,8 +107,8 @@ void loop()
     ledYellow(true);
     motors.setSpeeds(0, 0);
     buzzer.play("a32");
-    lcd.gotoXY(0, 0);
-    lcd.print('L');
+    display.gotoXY(0, 0);
+    display.print('L');
 
     motors.setSpeeds(maxSpeed, -maxSpeed);
     delay(turnTime);
@@ -116,8 +116,8 @@ void loop()
     motors.setSpeeds(0, 0);
     buzzer.play("b32");
     ledYellow(false);
-    lcd.gotoXY(0, 0);
-    lcd.print(' ');
+    display.gotoXY(0, 0);
+    display.print(' ');
   }
   else if (bumpSensors.rightIsPressed())
   {
@@ -125,8 +125,8 @@ void loop()
     ledRed(true);
     motors.setSpeeds(0, 0);
     buzzer.play("e32");
-    lcd.gotoXY(7, 0);
-    lcd.print('R');
+    display.gotoXY(7, 0);
+    display.print('R');
 
     motors.setSpeeds(-maxSpeed, maxSpeed);
     delay(turnTime);
@@ -134,7 +134,7 @@ void loop()
     motors.setSpeeds(0, 0);
     buzzer.play("f32");
     ledRed(false);
-    lcd.gotoXY(7, 0);
-    lcd.print(' ');
+    display.gotoXY(7, 0);
+    display.print(' ');
   }
 }

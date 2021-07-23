@@ -78,7 +78,7 @@ void selectTurtle()
   maxSpeed = 400;
 }
 
-PololuMenuMain<typeof(display)> menu;
+PololuMenu<typeof(display)> menu;
 
 void selectEdition()
 {

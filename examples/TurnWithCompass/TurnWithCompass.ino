@@ -40,8 +40,8 @@ using namespace Pololu3piPlus32U4;
 
 // Change next line to this if you are using the older 3pi+
 // with a black and green LCD display:
-// LCD lcd;
-OLED lcd;
+// LCD display;
+OLED display;
 
 Motors motors;
 Buzzer buzzer;
@@ -99,14 +99,14 @@ void selectTurtle()
   driveTime = 2000;
 }
 
-PololuMenuMain<typeof(lcd)> menu;
+PololuMenu<typeof(display)> menu;
 
 void selectEdition()
 {
-  lcd.clear();
-  lcd.print(F("Select"));
-  lcd.gotoXY(0,1);
-  lcd.print(F("edition"));
+  display.clear();
+  display.print(F("Select"));
+  display.gotoXY(0,1);
+  display.print(F("edition"));
   delay(1000);
 
   static const PololuMenuItem items[] = {
@@ -116,14 +116,14 @@ void selectEdition()
   };
 
   menu.setItems(items, 3);
-  menu.setDisplay(lcd);
+  menu.setDisplay(display);
   menu.setBuzzer(buzzer);
   menu.setButtons(buttonA, buttonB, buttonC);
 
   while(!menu.select());
 
-  lcd.gotoXY(0,1);
-  lcd.print("OK!  ...");
+  display.gotoXY(0,1);
+  display.print("OK!  ...");
 }
 
 // Setup will calibrate our compass by finding maximum/minimum magnetic readings
@@ -153,10 +153,10 @@ void setup()
 
   delay(1000);
 
-  lcd.clear();
-  lcd.print("starting");
-  lcd.gotoXY(0,1);
-  lcd.print("calib");
+  display.clear();
+  display.print("starting");
+  display.gotoXY(0,1);
+  display.print("calib");
   Serial.println("starting calibration");
 
   // To calibrate the magnetometer, the 3pi+ spins to find the max/min
@@ -203,8 +203,8 @@ void setup()
   m_min.x = running_min.x;
   m_min.y = running_min.y;
 
-  lcd.clear();
-  lcd.print("Press A");
+  display.clear();
+  display.print("Press A");
   buttonA.waitForButton();
 }
 
