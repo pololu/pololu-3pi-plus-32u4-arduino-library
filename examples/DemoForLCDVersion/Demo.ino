@@ -47,10 +47,6 @@ Encoders encoders;
 
 PololuMenu<typeof(display)> mainMenu;
 
-// declarations for splash screen
-#include "splash.h"
-uint8_t graphics[1024];
-
 bool launchSelfTest = false;
 
 // A couple of simple tunes, stored in program space.
@@ -165,76 +161,6 @@ void displayBackArrow()
   display.gotoXY(0,1);
   display.print(F("\7B"));
   display.gotoXY(0,0);
-}
-
-void displaySplash(uint8_t offset = 0)
-{
-  memset(graphics, 0, sizeof(graphics));
-  for(uint16_t i = 0; i < sizeof(graphics) - offset*128; i++)
-  {
-    graphics[i] = pgm_read_byte(pololu3PiPlusSplash + (i%128)*8 + i/128 + offset);
-  }
-  display.display();
-}
-
-void showSplash()
-{
-  display.setLayout21x8WithGraphics(graphics);
-  displaySplash(0);
-
-  uint16_t blinkStart = millis();
-  while((uint16_t)(millis() - blinkStart) < 900)
-  {
-    // keep setting the LEDs on for 1s
-    // the Green/Red LEDs might turn off during USB communication
-    ledYellow(1);
-    ledGreen(1);
-    ledRed(1);
-  }
-
-  // scroll quickly up
-  for(uint8_t offset = 1; offset < 5; offset ++)
-  {
-    delay(100);
-    displaySplash(offset);
-  }
-
-  display.clear();
-  display.gotoXY(0, 5);
-  display.print(F("Push B to start demo!"));
-  display.gotoXY(0, 6);
-  display.print(F("For more info, visit"));
-  display.gotoXY(0, 7);
-  display.print(F(" www.pololu.com/3pi+"));
-
-  while((uint16_t)(millis() - blinkStart) < 2000)
-  {
-    // keep the LEDs off for 1s
-    ledYellow(0);
-    ledGreen(0);
-    ledRed(0);
-  }
-
-  // Keep blinking the green LED while waiting for the
-  // user to press button B.
-  blinkStart = millis();
-  while (mainMenu.buttonMonitor() != 'B')
-  {
-    uint16_t blinkPhase = millis() - blinkStart;
-    ledGreen(blinkPhase < 1000);
-    if (blinkPhase >= 2000) { blinkStart += 2000; }
-  }
-  ledGreen(0);
-
-  display.setLayout10x4WithGraphics(graphics);
-  display.clear();
-  display.gotoXY(0,3);
-  display.print(F("Thank you!"));
-
-  buzzer.playFromProgramSpace(beepThankYou);
-  delay(1000);
-  display.clear();
-  display.setLayout8x2();
 }
 
 // Blinks all three LEDs in sequence.
@@ -1138,8 +1064,55 @@ void setup()
   }
 
   display.clear();
-  showSplash();
+  display.print(F("3\xf7+ 32U4"));
+  display.gotoXY(2, 1);
+  display.print(F("Demo"));
 
+  uint16_t blinkStart = millis();
+  while((uint16_t)(millis() - blinkStart) < 1000)
+  {
+    // keep setting the LEDs on for 1s
+    // the Green/Red LEDs might turn off during USB communication
+    ledYellow(1);
+    ledGreen(1);
+    ledRed(1);
+  }
+
+  display.clear();
+  display.print(F("Use B to"));
+  display.gotoXY(0, 1);
+  display.print(F("select."));
+
+  while((uint16_t)(millis() - blinkStart) < 2000)
+  {
+    // keep the LEDs off for 1s
+    ledYellow(0);
+    ledGreen(0);
+    ledRed(0);
+  }
+
+  display.clear();
+  display.print(F("Press B"));
+  display.gotoXY(0, 1);
+  display.print(F("-try it!"));
+
+  // Keep blinking the yellow LED while waiting for the
+  // user to press button B.
+  blinkStart = millis();
+  while (mainMenu.buttonMonitor() != 'B')
+  {
+    uint16_t blinkPhase = millis() - blinkStart;
+    ledGreen(blinkPhase < 1000);
+    if (blinkPhase >= 2000) { blinkStart += 2000; }
+  }
+  ledGreen(0);
+
+  buzzer.playFromProgramSpace(beepThankYou);
+  display.clear();
+  display.print(F(" Thank"));
+  display.gotoXY(0, 1);
+  display.print(F("  you!"));
+  delay(1000);
   mainMenuWelcome();
 }
 
