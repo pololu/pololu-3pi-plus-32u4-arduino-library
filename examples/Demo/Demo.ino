@@ -229,7 +229,9 @@ void showSplash()
   display.setLayout10x4WithGraphics(graphics);
   display.clear();
   display.gotoXY(0,3);
-  display.print(F("Thank you!"));
+  display.noAutoDisplay();
+  display.print(F("Thank you!!"));
+  display.display();
 
   buzzer.playFromProgramSpace(beepThankYou);
   delay(1000);
