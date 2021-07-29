@@ -226,7 +226,7 @@ void showSplash()
   }
   ledGreen(0);
 
-  display.setLayout10x4WithGraphics(graphics);
+  display.setLayout11x4WithGraphics(graphics);
   display.clear();
   display.gotoXY(0,3);
   display.noAutoDisplay();
