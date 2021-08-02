@@ -49,7 +49,6 @@ PololuMenu<typeof(display)> mainMenu;
 
 // declarations for splash screen
 #include "splash.h"
-uint8_t graphics[1024];
 
 bool launchSelfTest = false;
 
@@ -167,10 +166,10 @@ void displayBackArrow()
   display.gotoXY(0,0);
 }
 
-void displaySplash(uint8_t offset = 0)
+void displaySplash(uint8_t *graphics, uint8_t offset = 0)
 {
-  memset(graphics, 0, sizeof(graphics));
-  for(uint16_t i = 0; i < sizeof(graphics) - offset*128; i++)
+  memset(graphics, 0, sizeof(pololu3PiPlusSplash));
+  for(uint16_t i = 0; i < sizeof(pololu3PiPlusSplash) - offset*128; i++)
   {
     graphics[i] = pgm_read_byte(pololu3PiPlusSplash + (i%128)*8 + i/128 + offset);
   }
@@ -179,8 +178,13 @@ void displaySplash(uint8_t offset = 0)
 
 void showSplash()
 {
+  // We only need the graphics array within showSplash(); it's not
+  // used elsewhere in the demo program, so we can make it a local
+  // variable.
+  uint8_t graphics[1024];
+
   display.setLayout21x8WithGraphics(graphics);
-  displaySplash(0);
+  displaySplash(graphics, 0);
 
   uint16_t blinkStart = millis();
   while((uint16_t)(millis() - blinkStart) < 900)
@@ -196,7 +200,7 @@ void showSplash()
   for(uint8_t offset = 1; offset < 5; offset ++)
   {
     delay(100);
-    displaySplash(offset);
+    displaySplash(graphics, offset);
   }
 
   display.clear();
