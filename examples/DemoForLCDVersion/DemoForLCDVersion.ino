@@ -1,17 +1,17 @@
-/* This demo program shows many features of the 3pi+.
+/*
+This is a demo program for the older 3pi+ 32U4 with a black and green
+LCD display.
 
 It uses the buttons, display, and buzzer to provide a user
 interface.  It presents a menu to the user that lets the user
-select from
-several different demos.
+select from several different demos.
 
-To use this demo program, you will need to have the LCD/OLED
-display connected to the 3pi+.
+To use this demo program, you will need to have the LCD connected to
+the 3pi+.
 
-If you have an older 3pi+ with a black and green LCD display and
-you cannot see any text on the LCD, make sure you have modified
-the 'OLED display;' line below and try rotating the contrast
-potentiometer. */
+If you have an newer 3pi+ with a blue and black OLED display, use the
+other demo, DemoForOLEDVersion.
+*/
 
 #include <Wire.h>
 #include <Pololu3piPlus32U4.h>
@@ -30,10 +30,7 @@ enable IMU functionality.
 
 using namespace Pololu3piPlus32U4;
 
-// Change next line to this if you are using the older 3pi+
-// with a black and green LCD display:
-// LCD display;
-OLED display;
+LCD display;
 
 Buzzer buzzer;
 ButtonA buttonA;
