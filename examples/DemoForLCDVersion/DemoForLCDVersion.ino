@@ -7,7 +7,8 @@ interface.  It presents a menu to the user that lets the user
 select from several different demos.
 
 To use this demo program, you will need to have the LCD connected to
-the 3pi+.
+the 3pi+.  If you cannot see any text on the LCD, try rotating the
+contrast potentiometer.
 
 If you have an newer 3pi+ with a blue and black OLED display, use the
 other demo, DemoForOLEDVersion.
