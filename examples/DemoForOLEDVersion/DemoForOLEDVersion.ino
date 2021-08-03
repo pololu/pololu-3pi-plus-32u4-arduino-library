@@ -1,5 +1,5 @@
 /*
-This is a demo program for the 3pi+ 32U4 OLED.
+This is a demo program for the 3pi+ 32U4 OLED Robot.
 
 It uses the buttons, display, and buzzer to provide a user
 interface.  It presents a menu to the user that lets the user
