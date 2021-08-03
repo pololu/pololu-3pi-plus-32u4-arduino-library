@@ -11,13 +11,17 @@ courses or with different motors. */
 
 using namespace Pololu3piPlus32U4;
 
+// Change next line to this if you are using the older 3pi+
+// with a black and green LCD display:
+// LCD display;
+OLED display;
+
 Buzzer buzzer;
 LineSensors lineSensors;
 Motors motors;
 ButtonA buttonA;
 ButtonB buttonB;
 ButtonC buttonC;
-LCD lcd;
 
 int16_t lastError = 0;
 
@@ -94,31 +98,31 @@ void selectTurtle()
   derivative = 256; // D coefficient = 1
 }
 
-PololuMenu menu;
+PololuMenu<typeof(display)> menu;
 
 void selectEdition()
 {
-  lcd.clear();
-  lcd.print(F("Select"));
-  lcd.gotoXY(0,1);
-  lcd.print(F("edition"));
+  display.clear();
+  display.print(F("Select"));
+  display.gotoXY(0,1);
+  display.print(F("edition"));
   delay(1000);
 
-  static const PololuMenu::Item items[] = {
+  static const PololuMenuItem items[] = {
     { F("Standard"), selectStandard },
     { F("Turtle"), selectTurtle },
     { F("Hyper"), selectHyper },
   };
 
   menu.setItems(items, 3);
-  menu.setLcd(lcd);
+  menu.setDisplay(display);
   menu.setBuzzer(buzzer);
   menu.setButtons(buttonA, buttonB, buttonC);
 
   while(!menu.select());
 
-  lcd.gotoXY(0,1);
-  lcd.print("OK!  ...");
+  display.gotoXY(0,1);
+  display.print("OK!  ...");
 }
 
 // Sets up special characters in the LCD so that we can display
@@ -128,25 +132,25 @@ void loadCustomCharacters()
   static const char levels[] PROGMEM = {
     0, 0, 0, 0, 0, 0, 0, 63, 63, 63, 63, 63, 63, 63
   };
-  lcd.loadCustomCharacter(levels + 0, 0);  // 1 bar
-  lcd.loadCustomCharacter(levels + 1, 1);  // 2 bars
-  lcd.loadCustomCharacter(levels + 2, 2);  // 3 bars
-  lcd.loadCustomCharacter(levels + 3, 3);  // 4 bars
-  lcd.loadCustomCharacter(levels + 4, 4);  // 5 bars
-  lcd.loadCustomCharacter(levels + 5, 5);  // 6 bars
-  lcd.loadCustomCharacter(levels + 6, 6);  // 7 bars
+  display.loadCustomCharacter(levels + 0, 0);  // 1 bar
+  display.loadCustomCharacter(levels + 1, 1);  // 2 bars
+  display.loadCustomCharacter(levels + 2, 2);  // 3 bars
+  display.loadCustomCharacter(levels + 3, 3);  // 4 bars
+  display.loadCustomCharacter(levels + 4, 4);  // 5 bars
+  display.loadCustomCharacter(levels + 5, 5);  // 6 bars
+  display.loadCustomCharacter(levels + 6, 6);  // 7 bars
 }
 
 void printBar(uint8_t height)
 {
   if (height > 8) { height = 8; }
   const char barChars[] = {' ', 0, 1, 2, 3, 4, 5, 6, (char)255};
-  lcd.print(barChars[height]);
+  display.print(barChars[height]);
 }
 
 void calibrateSensors()
 {
-  lcd.clear();
+  display.clear();
 
   // Wait 1 second and then begin automatic sensor calibration
   // by rotating in place to sweep the sensors over the line
@@ -171,16 +175,16 @@ void calibrateSensors()
 // readings on the LCD. Returns after the user presses B.
 void showReadings()
 {
-  lcd.clear();
+  display.clear();
 
   while(!buttonB.getSingleDebouncedPress())
   {
     uint16_t position = lineSensors.readLineBlack(lineSensorValues);
 
-    lcd.clear();
-    lcd.gotoXY(0, 0);
-    lcd.print(position);
-    lcd.gotoXY(0, 1);
+    display.gotoXY(0, 0);
+    display.print(position);
+    display.print("    ");
+    display.gotoXY(0, 1);
     for (uint8_t i = 0; i < NUM_SENSORS; i++)
     {
       uint8_t barHeight = map(lineSensorValues[i], 0, 1000, 0, 8);
@@ -207,10 +211,10 @@ void setup()
   selectEdition();
 
   // Wait for button B to be pressed and released.
-  lcd.clear();
-  lcd.print(F("Press B"));
-  lcd.gotoXY(0, 1);
-  lcd.print(F("to calib"));
+  display.clear();
+  display.print(F("Press B"));
+  display.gotoXY(0, 1);
+  display.print(F("to calib"));
   while(!buttonB.getSingleDebouncedPress());
 
   calibrateSensors();
@@ -218,8 +222,8 @@ void setup()
   showReadings();
 
   // Play music and wait for it to finish before we start driving.
-  lcd.clear();
-  lcd.print(F("Go!"));
+  display.clear();
+  display.print(F("Go!"));
   buzzer.play("L16 cdegreg4");
   while(buzzer.isPlaying());
 }

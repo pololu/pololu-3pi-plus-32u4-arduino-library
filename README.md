@@ -27,7 +27,7 @@ To access most of features of this library, you just need a single include state
 
 using namespace Pololu3piPlus32U4;
 
-LCD lcd;
+OLED display;
 Buzzer buzzer;
 ButtonA buttonA;
 ButtonB buttonB;
@@ -61,6 +61,7 @@ The contents of the library are contained in the Pololu3piPlus32U4 namespace. Th
 * Pololu3piPlus32U4::ButtonC
 * Pololu3piPlus32U4::Buzzer
 * Pololu3piPlus32U4::Encoders
+* Pololu3piPlus32U4::OLED
 * Pololu3piPlus32U4::LCD
 * Pololu3piPlus32U4::Motors
 * Pololu3piPlus32U4::LineSensors

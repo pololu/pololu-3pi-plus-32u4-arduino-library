@@ -66,6 +66,11 @@ public:
         sendNibble(data & 0x0F);
     }
 
+    /// This does nothing, but it is here for compatibility with
+    /// the OLED class.  It lets us write examples that work with
+    /// either class.
+    void noAutoDisplay() {}
+
 private:
 
     void sendNibble(uint8_t data)

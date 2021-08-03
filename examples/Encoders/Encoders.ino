@@ -6,14 +6,14 @@
 // forward at full speed.  You can press button C to drive both
 // motors in reverse at full speed.
 //
-// Encoder counts are printed to the LCD and to the serial
-// monitor.
+// Encoder counts are printed to the LCD/OLED screen and to the
+// serial monitor.
 //
-// On the LCD, the top line shows the counts from the left
+// On the screen, the top line shows the counts from the left
 // encoder, and the bottom line shows the counts from the right
 // encoder.  Encoder errors should not happen, but if one does
 // happen then the buzzer will beep and an exclamation mark will
-// appear temporarily on the LCD.
+// appear temporarily on the screen.
 //
 // In the serial monitor, the first and second numbers represent
 // counts from the left and right encoders, respectively.  The
@@ -25,11 +25,15 @@
 using namespace Pololu3piPlus32U4;
 
 Encoders encoders;
-LCD lcd;
 Buzzer buzzer;
 Motors motors;
 ButtonA buttonA;
 ButtonC buttonC;
+
+// Change next line to this if you are using the older 3pi+
+// with a black and green LCD display:
+// LCD display;
+OLED display;
 
 const char encoderErrorLeft[] PROGMEM = "!<c2";
 const char encoderErrorRight[] PROGMEM = "!<e2";
@@ -61,47 +65,45 @@ void loop()
     bool errorLeft = encoders.checkErrorLeft();
     bool errorRight = encoders.checkErrorRight();
 
-    if(encoders.checkErrorLeft())
+    if (encoders.checkErrorLeft())
     {
       // An error occurred on the left encoder channel.
-      // Display it on the LCD for the next 10 iterations and
-      // also beep.
+      // Display it for the next 10 iterations and also beep.
       displayErrorLeftCountdown = 10;
       buzzer.playFromProgramSpace(encoderErrorLeft);
     }
 
-    if(encoders.checkErrorRight())
+    if (encoders.checkErrorRight())
     {
       // An error occurred on the left encoder channel.
-      // Display it on the LCD for the next 10 iterations and
-      // also beep.
+      // Display for the next 10 iterations and also beep.
       displayErrorRightCountdown = 10;
       buzzer.playFromProgramSpace(encoderErrorRight);
     }
 
-    // Update the LCD with encoder counts and error info.
-    lcd.clear();
-    lcd.print(countsLeft);
-    lcd.gotoXY(0, 1);
-    lcd.print(countsRight);
-
+    // Update the screen with encoder counts and error info.
+    display.noAutoDisplay();
+    display.clear();
+    display.print(countsLeft);
+    display.gotoXY(0, 1);
+    display.print(countsRight);
     if (displayErrorLeftCountdown)
     {
       // Show an exclamation point on the first line to
       // indicate an error from the left encoder.
-      lcd.gotoXY(7, 0);
-      lcd.print('!');
+      display.gotoXY(7, 0);
+      display.print('!');
       displayErrorLeftCountdown--;
     }
-
     if (displayErrorRightCountdown)
     {
       // Show an exclamation point on the second line to
       // indicate an error from the left encoder.
-      lcd.gotoXY(7, 1);
-      lcd.print('!');
+      display.gotoXY(7, 1);
+      display.print('!');
       displayErrorRightCountdown--;
     }
+    display.display();
 
     // Send the information to the serial monitor also.
     snprintf_P(report, sizeof(report),
