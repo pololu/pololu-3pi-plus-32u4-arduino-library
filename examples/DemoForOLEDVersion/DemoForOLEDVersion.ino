@@ -636,7 +636,6 @@ void compassDemo()
   while (true)
   {
     display.noAutoDisplay();
-    display.clear();
     displayBackArrow();
     display.gotoXY(7,1);
     display.print('C');
@@ -877,7 +876,31 @@ void encoderDemo()
 // Spin in place
 void spinDemo()
 {
+  display.setLayout21x8();
   display.clear();
+  display.print(F("Warning: this will")); display.gotoXY(0,1);
+  display.print(F("run both motors up to")); display.gotoXY(0,2);
+  display.print(F("full speed for a few")); display.gotoXY(0,3);
+  display.print(F("seconds.")); display.gotoXY(0,5);
+
+  display.print(F("Press A to continue.")); display.gotoXY(0,7);
+  display.print(F("\7 Press B to cancel."));
+
+  bool waiting = true;
+  while(waiting)
+  {
+    char button = mainMenu.buttonMonitor();
+    switch(button)
+    {
+    case 'B':
+      display.setLayout8x2();
+      return;
+    case 'A':
+      waiting = false;
+    }
+  }
+
+  display.setLayout8x2();
   displayBackArrow();
   display.print(F("Spinning"));
   display.gotoXY(5,1);
@@ -1043,37 +1066,6 @@ void displayDemo() {
   }
 }
 
-const char aboutText[] PROGMEM =
-  "       Pololu 3pi+ 32U4 Robot - more info at pololu.com/3pi+       ";
-
-void aboutDemo() {
-  size_t textPos = 0;
-  uint16_t lastShiftTime = millis() - 2000;
-  displayBackArrow();
-
-  while (mainMenu.buttonMonitor() != 'B')
-  {
-    // Shift the text to the left every 250 ms.
-    if ((uint16_t)(millis() - lastShiftTime) > 250)
-    {
-      lastShiftTime = millis();
-
-      display.gotoXY(0, 0);
-      for (uint8_t i = 0; i < 8; i++)
-      {
-        char c = pgm_read_byte(aboutText + textPos + i);
-        display.print(c);
-      }
-      textPos++;
-
-      if (textPos + 8 >= strlen(aboutText))
-      {
-        textPos = 0;
-      }
-    }
-  }
-}
-
 void setup()
 {
   static const PololuMenuItem mainMenuItems[] = {
@@ -1088,7 +1080,6 @@ void setup()
     { F("LEDs"), ledDemo },
     { F("LCD"), displayDemo },
     { F("Music"), musicDemo },
-    { F("About"), aboutDemo },
   };
   mainMenu.setItems(mainMenuItems, sizeof(mainMenuItems)/sizeof(mainMenuItems[0]));
   mainMenu.setDisplay(display);
@@ -1139,7 +1130,6 @@ void setup()
     return;
   }
 
-  display.clear();
   showSplash();
 
   mainMenuWelcome();
