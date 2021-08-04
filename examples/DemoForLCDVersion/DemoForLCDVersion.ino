@@ -931,10 +931,13 @@ void powerDemo()
 
 // This demo shows all characters that the LCD can display.  Press C to
 // advance to the the next page of 8 characters, or A to go back a page.
-// Note that the first two pages show the custom characters.  They are
+//
+// The demo starts on character 0x20 (space).
+//
+// Note that characters 0-8 are the custom characters.  They are
 // initially set to some strange random-looking shapes, but if you run
-// other demos that set custom characters then return here, you will see
-// what they loaded.
+// other demos that set custom characters then return here, you will
+// see what they loaded.
 void displayDemo() {
   displayBackArrow();
   display.gotoXY(7,1);

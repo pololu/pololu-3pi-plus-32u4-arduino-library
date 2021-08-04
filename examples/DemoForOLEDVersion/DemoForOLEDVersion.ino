@@ -1030,40 +1030,52 @@ void powerDemo()
   }
 }
 
-// This demo shows all characters that the LCD can display.  Press C to
-// advance to the the next page of 8 characters, or A to go back a page.
-// Note that the first two pages show the custom characters.  They are
-// initially set to some strange random-looking shapes, but if you run
-// other demos that set custom characters then return here, you will see
-// what they loaded.
+// This demo shows all characters that the OLED can display, 128 at a
+// time.  Press any button to advance to the the next page of 8
+// characters.  Note that the first eight are the custom characters.
+// Most of these are initially blank, but if you run other demos that
+// set custom characters then return here, you will see what they
+// loaded.
 void displayDemo() {
-  displayBackArrow();
-  display.gotoXY(7,1);
-  display.print('C');
+  display.setLayout21x8();
+  display.noAutoDisplay();
 
-  // The first four pages are boring/weird, so start at 0x20, which
-  // will show these characters, starting with a space:
-  //  !"#$%&'
-  uint8_t startCharacter = 4 * 8;
-
-  while (true)
+  for(int y=0; y<8; y++)
   {
-    display.gotoXY(0,0);
-    for(uint8_t i = 0; i < 8; i++)
+    display.gotoXY(0,y);
+    display.print(y, HEX);
+    display.print(": ");
+    for(int x=0; x<16; x++)
     {
-      display.print((char)(startCharacter + i));
+      display.print((char)(y*16+x));
     }
-    display.gotoXY(3,1);
-
-    char buf[4];
-    sprintf(buf, "x%02x", startCharacter);
-    display.print(buf);
-
-    char b = mainMenu.buttonMonitor();
-    if ('B' == b) break;
-    if ('A' == b) startCharacter -= 8;
-    if ('C' == b) startCharacter += 8;
+    display.print(" :");
   }
+  display.display();
+
+  // wait for a button press
+  while(mainMenu.buttonMonitor() == 0);
+
+  display.clear();
+  display.noAutoDisplay();
+
+  for(int y=0; y<8; y++)
+  {
+    display.gotoXY(0,y);
+    display.print(y+8, HEX);
+    display.print(": ");
+    for(int x=0; x<16; x++)
+    {
+      display.print((char)(128+y*16+x));
+    }
+    display.print(" :");
+  }
+  display.display();
+
+  // wait for a button press
+  while(mainMenu.buttonMonitor() == 0);
+
+  display.setLayout8x2();
 }
 
 void setup()
@@ -1078,7 +1090,7 @@ void setup()
     { F("Encoders"), encoderDemo },
     { F("Spin"), spinDemo },
     { F("LEDs"), ledDemo },
-    { F("LCD"), displayDemo },
+    { F("OLED"), displayDemo },
     { F("Music"), musicDemo },
   };
   mainMenu.setItems(mainMenuItems, sizeof(mainMenuItems)/sizeof(mainMenuItems[0]));
