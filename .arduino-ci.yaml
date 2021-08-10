@@ -1,2 +1,4 @@
 only_boards:
   - arduino:avr:leonardo
+library_archives:
+  - PololuMenu=https://github.com/pololu/pololu-menu-arduino/archive/2.0.0.tar.gz=08p86134yki2z15zq9jwbqld4zvgjg1cp0799mrwx6qjnbsjbssk
