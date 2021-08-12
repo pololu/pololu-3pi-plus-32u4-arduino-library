@@ -87,6 +87,7 @@ This library also references several other Arduino libraries which are used to h
 
 ## Version history
 
+* 1.1.1 (2021-08-11): Fixed a typo in the RotationResist demo.
 * 1.1.0 (2021-08-10): Added support for the 3pi+ 32U4 OLED.
 * 1.0.1 (2020-12-03): Moved code into `src/` folder; continuous integration; fixed some warnings; added missing library dependence on PololuMenu.
 * 1.0.0 (2020-12-01): Customized example sketches for different 3pi+ editions. Reimplemented menus using the PololuMenu class. Added flipEncoders() method to the Encoders class to work better with the Hyper edition robot.

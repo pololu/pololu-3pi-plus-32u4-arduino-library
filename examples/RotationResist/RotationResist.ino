@@ -32,8 +32,8 @@ enable IMU functionality.
 using namespace Pololu3piPlus32U4;
 
 // Change next line to this if you are using the older 3pi+
-// with a black and green display display:
-// display display;
+// with a black and green LCD display:
+// LCD display;
 OLED display;
 
 Buzzer buzzer;
