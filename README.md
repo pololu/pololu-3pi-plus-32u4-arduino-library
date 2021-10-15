@@ -87,6 +87,7 @@ This library also references several other Arduino libraries which are used to h
 
 ## Version history
 
+* 1.1.2 (2021-10-15): Fixed a bug that prevented the OLED display from working if the MOS pin was previously changed to be an input.
 * 1.1.1 (2021-08-11): Fixed a typo in the RotationResist demo.
 * 1.1.0 (2021-08-10): Added support for the 3pi+ 32U4 OLED.
 * 1.0.1 (2020-12-03): Moved code into `src/` folder; continuous integration; fixed some warnings; added missing library dependence on PololuMenu.
