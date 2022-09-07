@@ -1,5 +1,7 @@
 # Pololu3piPlus32U4 library
 
+[www.pololu.com](https://www.pololu.com/)
+
 ## Summary
 
 <img align="right" src="https://a.pololu-files.com/picture/0J11323.240w.jpg?bf2f67dbe8c5a1035409af8b78b78f97">
